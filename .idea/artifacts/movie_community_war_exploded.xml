@@ -7,6 +7,9 @@
         <element id="directory" name="classes">
           <element id="module-output" name="movie-community" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="cos" />
+        </element>
       </element>
     </root>
   </artifact>

@@ -1,0 +1,196 @@
+@font-face {
+    font-family: 'GangwonEduPowerExtraBoldA';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEduPowerExtraBoldA.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GongGothicMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GongGothicBold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicBold.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+#body a {
+    text-decoration: none;
+    color: rgb(31, 31, 31);
+}
+
+#body a:hover {
+    color: rgb(69, 149 , 140);
+}
+
+#body{
+    background-color: rgb(33, 33, 33);
+}
+
+main {
+    width: 1200px;
+    margin: 0 auto;
+}
+main > header {
+    font-family: 'GongGothicBold';
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+header > nav > ul {
+    padding:0 15px;
+}
+
+ul a {
+    text-decoration: none;
+}
+
+header > nav {
+    height: 80px;
+    width: 700px;
+    background-color: #DDDD;
+    margin-top: 20px;
+    border-radius: 20px;
+
+}
+
+header > nav > ul {
+    display: flex;
+    list-style: none;
+    justify-content: space-between;
+}
+
+header > nav > ul > li {
+    padding: 20px;
+    margin: 5px;
+    font-size: 22px;
+}
+
+header > nav > ul > li > a {
+    color: rgb(31, 31, 31);
+    font-weight: bold;
+}
+
+
+header > #mainLogo  img {
+    width: 150px;
+}
+
+
+header > a#bell {
+    color: #DDDD;
+    font-size: 30px;
+    margin-right: 50px;
+    margin-top: 33px;
+}
+
+header > div.btns {
+    margin-top: 35px;
+}
+
+header > div.btns > input {
+    margin-right: 10px;
+}
+
+header > div#login {
+    display: flex;
+}
+
+header > div#login  img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+header > div#login #level {
+    width: 30px;
+}
+
+header > div#login #nickname {
+    color: white;
+}
+
+header > div#login {
+    margin-top: 20px;
+}
+
+header > div#login > div#info {
+    margin-left: 10px;
+    margin-top: 20px;
+    font-family: 'GongGothicMedium';
+}
+
+header> div#login > div#info > div.control{
+    margin-top: 5px;
+}
+
+header> div#login > div#info > div.control > a {
+    color: gray;
+}
+
+header> div#login > div#info > div.control > a:hover {
+    color: rgb(69, 149 , 140);
+}
+
+section {
+    margin-top: 80px;
+}
+
+section > div > table tr:nth-child(1) {
+    background-color: gray;
+}
+
+section > div > table tr th {
+    color: white;
+    text-align: center;
+}
+
+section > div > table tr td {
+    color: white;
+    text-align: center;
+    padding: 10px;
+}
+
+section > div > table tr:first-child th:first-child { border-top-left-radius: 20px; }
+section > div > table tr:first-child th:last-child { border-top-right-radius: 20px; }
+
+section {
+    display: flex;
+}
+
+section > div#submenu {
+    background-color: #DDDD;
+    width: 150px;
+    border-radius: 20px;
+}
+
+section > div#submenu > ul {
+    margin-top: 30px;
+}
+
+section > div#submenu > ul > li {
+    color: black;
+    list-style: none;
+    padding: 5px;
+    font-family: 'GongGothicMedium';
+}
+
+section > div#board{
+    margin-left: 16px;
+    background-color: rgba(170, 170, 170, 0.158);
+    border-radius: 20px;
+}
+
+.table-hover:hover {
+    background-color: rgb(69, 149 , 140);
+}
+
+section > #board > table tr td:nth-child(2) {
+    text-align: left;
+}
