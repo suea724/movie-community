@@ -8,8 +8,7 @@
           <element id="module-output" name="movie-community" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="cos" />
-          <element id="library" level="project" name="ojdbc8" />
+          <element id="library" level="project" name="xmpcore-5.1.2" />
         </element>
       </element>
     </root>
