@@ -2,9 +2,7 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-.idea/*
-.idea/*.xml
-*.iml
+
 
 ### Eclipse ###
 .apt_generated
@@ -28,5 +26,3 @@ bin/
 ### VS Code ###
 .vscode/
 
-### Mac OS ###
-.DS_Store!/movie-community.iml
