@@ -9,6 +9,7 @@
         <webroots>
           <root url="file://$MODULE_DIR$/web" relative="/" />
         </webroots>
+        <sourceRoots />
       </configuration>
     </facet>
   </component>
@@ -20,7 +21,12 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="guicedee.services.javax.servlet.api" level="project" />
+<<<<<<< HEAD
     <orderEntry type="library" name="cos" level="project" />
     <orderEntry type="library" name="bootstrap" level="application" />
+=======
+    <orderEntry type="library" name="bootstrap" level="application" />
+    <orderEntry type="library" name="xmpcore-5.1.2" level="project" />
+>>>>>>> a6f99a013d986ac8f9db3a902edc14c51a2722cd
   </component>
 </module>

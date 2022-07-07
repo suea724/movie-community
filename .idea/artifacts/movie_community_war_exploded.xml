@@ -8,7 +8,11 @@
           <element id="module-output" name="movie-community" />
         </element>
         <element id="directory" name="lib">
+<<<<<<< HEAD
           <element id="library" level="project" name="cos" />
+=======
+          <element id="library" level="project" name="xmpcore-5.1.2" />
+>>>>>>> a6f99a013d986ac8f9db3a902edc14c51a2722cd
         </element>
       </element>
     </root>
