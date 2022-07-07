@@ -9,6 +9,7 @@
         <webroots>
           <root url="file://$MODULE_DIR$/web" relative="/" />
         </webroots>
+        <sourceRoots />
       </configuration>
     </facet>
   </component>
@@ -22,5 +23,6 @@
     <orderEntry type="library" name="guicedee.services.javax.servlet.api" level="project" />
     <orderEntry type="library" name="cos" level="project" />
     <orderEntry type="library" name="bootstrap" level="application" />
+    <orderEntry type="library" name="ojdbc10" level="project" />
   </component>
 </module>
