@@ -1,5 +1,8 @@
 package com.project.movie.dto;
 
+import lombok.Data;
+
+@Data
 public class CommentDTO {
 
     private String seq;
