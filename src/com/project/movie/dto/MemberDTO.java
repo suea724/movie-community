@@ -1,6 +1,9 @@
 package com.project.movie.dto;
 
-public class UserDTO {
+import lombok.Data;
+
+@Data
+public class MemberDTO {
 
     private String id;
     private String name;
@@ -9,4 +12,5 @@ public class UserDTO {
     private String tel;
     private String picture;
     private String joindate;
+    private int grade;
 }
