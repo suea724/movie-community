@@ -1,13 +1,16 @@
 package com.project.movie.member;
 
 import com.project.movie.DBUtil;
+import com.project.movie.dto.HashTagDTO;
 import com.project.movie.dto.LoginDTO;
 import com.project.movie.dto.MemberDTO;
+import oracle.security.pki.util.EccCurveParameters;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class MemberDAO {
 
@@ -83,9 +86,10 @@ public class MemberDAO {
 
     public int getPostsCount(MemberDTO dto) {
         try {
-            String sql = "select count(*) as cnt from tblPost p inner join tblUser u on p.id = u.id";
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
+            String sql = "select count(*) as cnt from tblPost p inner join tblUser u on p.id = u.id where u.id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, dto.getId());
+            rs = pstmt.executeQuery();
 
             if (rs.next()) {
                 return Integer.parseInt(rs.getString("cnt"));
@@ -99,9 +103,10 @@ public class MemberDAO {
 
     public int getCommentCount(MemberDTO dto) {
         try {
-            String sql = "select count(*) as cnt from tblComment c inner join tblUser u on c.id = u.id";
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery(sql);
+            String sql = "select count(*) as cnt from tblComment c inner join tblUser u on c.id = u.id where u.id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, dto.getId());
+            rs = pstmt.executeQuery();
 
             if (rs.next()) {
                 return Integer.parseInt(rs.getString("cnt"));
@@ -111,5 +116,82 @@ public class MemberDAO {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public String findId(String name, String tel) {
+        try {
+            String sql = "select id from tblUser where name = ? and tel = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, name);
+            pstmt.setString(2, tel);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int findMemberByPw(String id, String name, String tel) {
+        try {
+            String sql = "select count(*) as cnt from tblUser where name = ? and tel = ? and id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, name);
+            pstmt.setString(2, tel);
+            pstmt.setString(3, id);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return Integer.parseInt(rs.getString("cnt"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int updatePw(String id, String pw) {
+        try {
+            String sql = "update tblUser set password = ? where id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, pw);
+            pstmt.setString(2, id);
+
+            return pstmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public ArrayList<HashTagDTO> getGenres() {
+
+        try {
+            String sql = "select * from tblHashTag";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(sql);
+
+            ArrayList<HashTagDTO> list = new ArrayList<>();
+
+            while (rs.next()) {
+                HashTagDTO dto = new HashTagDTO();
+                dto.setSeq(rs.getString("seq"));
+                dto.setHashtag(rs.getString("hashtag"));
+
+                list.add(dto);
+            }
+            return list;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
