@@ -6,7 +6,7 @@
 </head>
 <body id="body">
 <main>
-<%@ include file="/WEB-INF/inc/header.jsp"%>
+    <%@ include file="/WEB-INF/inc/header.jsp"%>
 
     <section>
         <div id="subboard">
@@ -100,6 +100,7 @@
                 </table>
             </div>
         </div>
+        <div><input type="button" class="btn btn-danger" value="글 쓰기"></div>
 
     </section>
     <footer>
