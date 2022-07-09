@@ -23,6 +23,9 @@ public class Login extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        req.setCharacterEncoding("UTF-8");
+
         String id = req.getParameter("id");
         String pw = req.getParameter("pw");
 
@@ -33,13 +36,17 @@ public class Login extends HttpServlet {
         MemberDAO dao = new MemberDAO();
         MemberDTO mdto = dao.login(dto);
 
+        System.out.println("mdto = " + mdto);
+
         if (mdto != null) { // 로그인 성공
 
             int postsCnt = dao.getPostsCount(mdto);
             int commentCnt = dao.getCommentCount(mdto);
             int grade = (postsCnt + commentCnt) / 10;
 
-            System.out.println(grade);
+            System.out.println("commentCnt = " + commentCnt);
+            System.out.println("postsCnt = " + postsCnt);
+             System.out.println(grade);
 
             mdto.setGrade(grade);
 
