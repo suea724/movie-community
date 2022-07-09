@@ -286,6 +286,7 @@ public class GroupDAO {
                 dto.setReadcount(rs.getString("readcount"));
                 dto.setGood(rs.getString("good"));
                 dto.setBad(rs.getString("bad"));
+                dto.setSeq(rs.getString("seq"));
 
                 return dto;
             }
@@ -343,5 +344,20 @@ public class GroupDAO {
         }
 
         return null;
+    }
+
+    public int GroupEdit(String seq) {
+
+        try {
+
+            String sql = "";
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.GroupEdit");
+            e.printStackTrace();
+        }
+
+        return 0;
+
     }
 }

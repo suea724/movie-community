@@ -45,7 +45,7 @@
 
         <c:if test="${dto.id == auth.id}">
           <div style="display: flex; justify-content: right">
-            <button type="button" class="btn btn-primary" style="margin-left: 5px;">수정하기</button>
+            <button type="button" class="btn btn-primary" style="margin-left: 5px;" onclick="location.href='/movie/group/edit.do?seq=${dto.seq}'">수정하기</button>
             <button type="button" class="btn btn-danger">삭제하기</button>
           </div>
         </c:if>

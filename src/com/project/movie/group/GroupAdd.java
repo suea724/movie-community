@@ -1,6 +1,5 @@
 package com.project.movie.group;
 
-import com.project.movie.dto.GroupDTO;
 import com.project.movie.dto.MemberDTO;
 import com.project.movie.dto.PostDTO;
 import org.json.simple.JSONArray;
@@ -16,11 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet("/group/add.do")
-public class Add extends HttpServlet {
+@WebServlet("/group/groupadd.do")
+public class GroupAdd extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -32,7 +30,7 @@ public class Add extends HttpServlet {
         req.setAttribute("taglist", taglist);
 
 
-        RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/group/add.jsp");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/group/groupadd.jsp");
         dispatcher.forward(req, resp);
     }
 
