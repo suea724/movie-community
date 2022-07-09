@@ -4,7 +4,6 @@ import com.project.movie.DBUtil;
 import com.project.movie.dto.HashTagDTO;
 import com.project.movie.dto.LoginDTO;
 import com.project.movie.dto.MemberDTO;
-import oracle.security.pki.util.EccCurveParameters;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
