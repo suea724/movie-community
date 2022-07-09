@@ -9,7 +9,7 @@
     <%@ include file="/WEB-INF/inc/header.jsp"%>
 
     <section>
-        <form method="post" action="/movie/main/add.do">
+        <form method="post" action="/movie/main/edit.do">
             <table class="table table-bordered">
                 <tr>
                     <td>
@@ -19,7 +19,7 @@
                             <option value="2">자유</option>
                         </select>
                     </td>
-                    <td colspan><input type="text" name="title" required placeholder="제목을 입력하세요."></td>
+                    <td colspan><input type="text" name="title" required placeholder="제목을 입력하세요." value="${dto.title}"></td>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -27,13 +27,15 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2"><textarea name="content" placeholder="내용을 입력하세요." required></textarea></td>
+                    <td colspan="2"><textarea name="content" placeholder="내용을 입력하세요." required >${dto.content}</textarea></td>
                 </tr>
             </table>
             <div class="btns">
                 <input type="button" value="돌아가기" class="btn btn-light" onclick="history.back();">
-                <input type="submit" value="글쓰기" class="btn btn-dark">
+                <input type="submit" value="수정하기" class="btn btn-dark">
             </div>
+
+            <input type="hidden" name="seq" value="${dto.seq}">
         </form>
 
     </section>

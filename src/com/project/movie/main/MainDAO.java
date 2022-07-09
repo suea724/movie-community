@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainDAO {
     private Connection conn;
@@ -113,5 +114,186 @@ public class MainDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<PostDTO> list(HashMap<String, String> map) {
+        try {
+            String where = "";
+            String sql = "";
+
+            if(map.get("isSearch").equals("y")) {
+                where = String.format("where %s like '%%%s%%'", map.get("column"), map.get("word"));
+            }
+
+            sql = String.format("select * from (select a.*, rownum as rnum from vwMain a %s) where rnum between %s and %s",
+                    where, map.get("begin"), map.get("end"));
+
+            stat = conn.createStatement();
+
+            rs = stat.executeQuery(sql);
+            ArrayList<PostDTO> list = new ArrayList<PostDTO>();
+
+            while (rs.next()) {
+                PostDTO dto = new PostDTO();
+
+                dto.setSeq(rs.getString("seq"));
+                dto.setTitle(rs.getString("title"));
+                dto.setId(rs.getString("id"));
+                dto.setNickname(rs.getString("nickname"));
+                dto.setRegdate(rs.getString("regdate"));
+                dto.setReadcount(rs.getString("readcount"));
+                dto.setCommentcount(rs.getString("commentcount"));
+
+                list.add(dto);
+            }
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getTotalCount(HashMap<String, String> map) {
+        try{
+            String where = "";
+
+            if(map.get("isSearch").equals("y")) {
+                where = String.format("where %s like '%%%s%%'", map.get("column"), map.get("world"));
+            }
+
+            String sql = "select count(*) as cnt from vwMain " + where;
+
+            stat = conn.createStatement();
+
+            rs = stat.executeQuery(sql);
+
+            if(rs.next()) {
+                return rs.getInt("cnt");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public PostDTO getView(PostDTO tempdto) {
+        try {
+            String sql = "select tblPost.*, (select nickname from tblUser where id = tblPost.id) as nickname from tblPost where seq = ?";
+
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, tempdto.getSeq());
+
+            rs = pstat.executeQuery();
+
+            PostDTO dto = new PostDTO();
+
+            if(rs.next()) {
+                dto.setSeq(rs.getString("seq"));
+                dto.setTitle(rs.getString("title"));
+                dto.setContent(rs.getString("content"));
+                dto.setId(rs.getString("id"));
+                dto.setNickname(rs.getString("nickname"));
+                dto.setRegdate(rs.getString("regdate"));
+                dto.setReadcount(rs.getString("readcount"));
+            }
+            return dto;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void updateReadcount(String seq) {
+        try {
+            String sql = "update tblPost set readcount = readcount + 1 where seq = ?";
+
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+            pstat.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<String> getHashTag(String seq) {
+        try {
+            String sql = "select hashtag from tblHashTag where seq = (select hseq from tblPostHash where pseq = ?)";
+
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+            rs = pstat.executeQuery();
+
+            ArrayList<String> list = new ArrayList<>();
+
+            while(rs.next()) {
+                //System.out.println(rs.getString("hashtag"));
+                list.add(rs.getString("hashtag"));
+            }
+
+            return list;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void delHashTag(String seq) {
+        try {
+            String sql = "delete from tblPostHash where pseq = ?";
+
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+            pstat.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delComment(String seq) {
+        try{
+            String sql = "delete from tblComment where pseq = ?";
+
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+            pstat.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int delContent(String seq) {
+        try {
+            String sql = "delete from tblPost where seq = ?";
+
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+            return pstat.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int updatePost(PostDTO dto) {
+        try {
+            String sql = "update tblPost set title = ?, content = ?, type = ? where seq = ?";
+
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, dto.getTitle());
+            pstat.setString(2, dto.getContent());
+            pstat.setString(3, dto.getType());
+            pstat.setString(4, dto.getSeq());
+
+            return pstat.executeUpdate();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 }

@@ -63,7 +63,7 @@ public class Add extends HttpServlet {
 
         //3.5 해시태그 처리하기
         String hashtag = req.getParameter("tags-disabled-user-input");
-        System.out.println(hashtag);
+        //System.out.println(hashtag);
         JSONParser parser = new JSONParser(); //json으로 받아온 데이터를 java로 바꿔주는 역할
 
         try {
@@ -71,9 +71,9 @@ public class Add extends HttpServlet {
 
             for(Object obj : list) {
                 String tag = (String)((JSONObject)obj).get("value");
-                System.out.println(tag);
+                //System.out.println(tag);
                 String hseq = dao.getHashTagSeq(tag);
-                System.out.println(hseq);
+                //System.out.println(hseq);
 
 
                 dao.addHashTag(hseq, maxSeq);

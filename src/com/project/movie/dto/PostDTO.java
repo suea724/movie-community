@@ -14,4 +14,7 @@ public class PostDTO {
     private String bad;
     private String type;
     private String id;
+
+    private String nickname;
+    private String commentcount;
 }
