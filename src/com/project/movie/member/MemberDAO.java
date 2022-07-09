@@ -35,6 +35,7 @@ public class MemberDAO {
 
                 mdto.setId(rs.getString("id"));
                 mdto.setName(rs.getString("name"));
+                mdto.setPassword(rs.getString("password"));
                 mdto.setNickname(rs.getString("nickname"));
                 mdto.setTel(rs.getString("tel"));
                 mdto.setPicture(rs.getString("picture"));
@@ -191,6 +192,110 @@ public class MemberDAO {
             e.printStackTrace();
         }
 
+        return null;
+    }
+
+    public int del(String id) {
+        try {
+            String sql = "delete from tblUser where id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            return pstmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public boolean addMember(MemberDTO dto) {
+        try {
+
+            String sql = "";
+
+            if (dto.getPicture() != null) { // 프로필 사진이 있는 경우
+                sql = "insert into tblUser(id, name, nickname, password, tel, picture, joindate) values (?, ?, ?, ?, ?, ?, default)";
+
+                pstmt = conn.prepareStatement(sql);
+
+                pstmt.setString(1, dto.getId());
+                pstmt.setString(2, dto.getName());
+                pstmt.setString(3, dto.getNickname());
+                pstmt.setString(4, dto.getPassword());
+                pstmt.setString(5, dto.getTel());
+                pstmt.setString(6, dto.getPicture());
+
+            } else { // 프로필 사진이 없는 경우
+                sql = "insert into tblUser(id, name, nickname, password, tel, picture, joindate) values (?, ?, ?, ?, ?, default, default)";
+
+                pstmt = conn.prepareStatement(sql);
+
+                pstmt.setString(1, dto.getId());
+                pstmt.setString(2, dto.getName());
+                pstmt.setString(3, dto.getNickname());
+                pstmt.setString(4, dto.getPassword());
+                pstmt.setString(5, dto.getTel());
+            }
+
+            int result = pstmt.executeUpdate();
+            if (result == 1) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean addTag(String id, ArrayList<String> list) {
+        try {
+            String sql = "insert into tblUserHash values (seqUserHash.nextVal, ?, ?)";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+
+            int result = 0;
+
+            for (String seq : list) {
+                pstmt.setString(2, seq);
+                 result = pstmt.executeUpdate();
+            }
+
+            if (result == 1) {
+                return true;
+            } else {
+                return false;
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public ArrayList<String> getHashSeqList(ArrayList<HashTagDTO> list) {
+        try {
+            String sql = "select seq from tblHashTag where hashtag = ?";
+            pstmt = conn.prepareStatement(sql);
+
+            ArrayList<String> seqList = new ArrayList<>();
+
+            for (HashTagDTO dto : list) {
+                pstmt.setString(1, dto.getHashtag());
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    seqList.add(rs.getString("seq"));
+                }
+            }
+            return seqList;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }
