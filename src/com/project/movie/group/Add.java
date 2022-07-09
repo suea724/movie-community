@@ -91,7 +91,7 @@ public class Add extends HttpServlet {
 
         if (result == 1){
             //성공
-            resp.sendRedirect("/movie/main/view.do?seq=" + maxSeq);
+            resp.sendRedirect(String.format("/movie/group/groupview.do?group=%s&seq=%s", group, maxSeq));
         } else {
             //실패
         }

@@ -20,7 +20,7 @@
         <div id="subboard">
             <div id="submenu">
                 <ul>
-                    <li><a href="">전체게시판</a></li>
+                    <li><a href="/movie/group/grouplist.do?group=${group}">전체게시판</a></li>
                     <li><a href="">그룹 정보</a></li>
                     <li><a href="">그룹원 목록</a></li>
                     <li><a href="">신청 목록</a></li>
@@ -35,13 +35,16 @@
                         <th>작성날짜</th>
                         <th>조회수</th>
                     </tr>
-                    <tr class="table-hover">
-                        <td>1</td>
-                        <td>마녀2 재밌다</td>
-                        <td>길동이</td>
-                        <td>2022-07-05</td>
-                        <td>100</td>
-                    </tr>
+                    <c:forEach items="${list}" var="dto">
+                        <tr class="table-hover">
+                            <td>${dto.seq}</td>
+                            <td><a href="/movie/group/groupview.do?group=${group}&seq=${dto.seq}" style="color: white">${dto.title} <span style="color: red; text-decoration:underline;">${dto.commentcount}</span></a></td>
+                            <td><span class="badge rounded-pill bg-warning">Lv.${auth.grade}</span>${dto.nickname}</td>
+                            <td>${dto.regdate}</td>
+                            <td>${dto.readcount}</td>
+                        </tr>
+
+                    </c:forEach>
                 </table>
             </div>
         </div>
@@ -51,13 +54,7 @@
         </div>
         </c:if>
         <div style="justify-content: center; display: flex">
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#"><</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">></a></li>
-            </ul>
+            ${pagebar}
         </div>
 
         <div style="display: flex; justify-content: center">
@@ -66,9 +63,9 @@
                     <tr>
                         <td>
                             <select name="column" class="form-select">
-                                <option value="subject">제목</option>
+                                <option value="title">제목</option>
                                 <option value="content">내용</option>
-                                <option value="name">이름</option>
+                                <option value="nickname">이름</option>
                             </select>
                         </td>
                         <td>
@@ -82,6 +79,9 @@
                         </td>
                     </tr>
                 </table>
+
+
+                <input type="hidden" name="group" value="${group}">
             </form>
         </div>
 
@@ -90,6 +90,9 @@
 
     </footer>
 </main>
+<script>
+
+</script>
 
 
 </body>
