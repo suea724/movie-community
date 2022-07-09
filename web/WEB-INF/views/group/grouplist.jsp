@@ -10,6 +10,13 @@
     <%@ include file="/WEB-INF/inc/header.jsp"%>
 
     <section>
+        <div style="display: flex; justify-content: right;">
+            <select class="form-select" style="margin-right: 40px; margin-bottom: 20px; width: 130px;">
+                <option value="1" selected>최신순</option>
+                <option value="2">조회순</option>
+                <option value="3">오래된순</option>
+            </select>
+        </div>
         <div id="subboard">
             <div id="submenu">
                 <ul>
@@ -38,8 +45,11 @@
                 </table>
             </div>
         </div>
-        <div id="add" style="display: flex; justify-content: right"><input type="button" class="btn btn-danger" value="글 쓰기" onclick="location.href='/movie/group/add.do';" style="margin-top: 20px; margin-right: 30px"></div>
-
+        <c:if test="${not empty auth}">
+        <div id="add" style="display: flex; justify-content: right">
+            <input type="button" class="btn btn-danger" value="글 쓰기" onclick="location.href='/movie/group/add.do';" style="margin-top: 20px; margin-right: 30px">
+        </div>
+        </c:if>
         <div style="justify-content: center; display: flex">
             <ul class="pagination">
                 <li class="page-item"><a class="page-link" href="#"><</a></li>
@@ -51,11 +61,11 @@
         </div>
 
         <div style="display: flex; justify-content: center">
-            <form method="GET" action="/toy/board/list.do">
+            <form method="GET" action="/movie/group/grouplist.do">
                 <table class="search">
                     <tr>
                         <td>
-                            <select name="column" class="form-control">
+                            <select name="column" class="form-select">
                                 <option value="subject">제목</option>
                                 <option value="content">내용</option>
                                 <option value="name">이름</option>
@@ -69,12 +79,6 @@
                                 검색하기
                             </button>
 
-                            <c:if test="${map.isSearch == 'y'}">
-                                <button class="btn btn-secondary" type="button"
-                                        onclick="location.href='/toy/board/list.do';">
-                                    중단하기
-                                </button>
-                            </c:if>
                         </td>
                     </tr>
                 </table>

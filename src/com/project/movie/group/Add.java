@@ -1,7 +1,12 @@
 package com.project.movie.group;
 
 import com.project.movie.dto.GroupDTO;
+import com.project.movie.dto.MemberDTO;
 import com.project.movie.dto.PostDTO;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -42,22 +47,54 @@ public class Add extends HttpServlet {
         String content = req.getParameter("content");
         String group = req.getParameter("group");
 
+        MemberDTO dtoId = (MemberDTO) session.getAttribute("auth");
+
         PostDTO dto = new PostDTO();
-        dto.setId((String)session.getAttribute("auth"));
+        dto.setId(dtoId.getId());
         dto.setTitle(title);
         dto.setType("3");
         dto.setContent(content);
 
         GroupDAO dao = new GroupDAO();
 
+        String maxSeq = null;
+
         int result = 0;
-        if (session.getAttribute("auth") != null) {
+        if (dtoId.getId() != null) {
             result = dao.add(dto);
+
+            maxSeq = dao.maxSeq();
+
+            result = dao.addPostGroup(maxSeq, group);
         }
 
+        String hashtag = req.getParameter("tags-disabled-user-input");
+
+        JSONParser parser = new JSONParser();
+
+        try {
+
+            JSONArray list = (JSONArray)parser.parse(hashtag);
+
+            for (Object obj : list) {
+                String tag = (String)((JSONObject)obj).get("value");
+
+                String hseq = dao.getHashTagSeq(tag);
+
+                dao.addTagging(maxSeq, hseq);
+            }
 
 
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
+        if (result == 1){
+            //성공
+            resp.sendRedirect("/movie/main/view.do?seq=" + maxSeq);
+        } else {
+            //실패
+        }
 
     }
 }

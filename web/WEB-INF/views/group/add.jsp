@@ -29,7 +29,7 @@
         </div>
       </div>
 
-      <input >
+      <input type="hidden" name="group" value="1">
     </form>
 
   </section>

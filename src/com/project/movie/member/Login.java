@@ -39,8 +39,6 @@ public class Login extends HttpServlet {
             int commentCnt = dao.getCommentCount(mdto);
             int grade = (postsCnt + commentCnt) / 10;
 
-            System.out.println(grade);
-
             mdto.setGrade(grade);
 
             HttpSession session = req.getSession();
