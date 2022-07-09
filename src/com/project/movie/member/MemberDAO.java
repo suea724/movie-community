@@ -208,7 +208,7 @@ public class MemberDAO {
         return 0;
     }
 
-    public boolean addMember(MemberDTO dto) {
+    public int addMember(MemberDTO dto) {
         try {
 
             String sql = "";
@@ -237,43 +237,28 @@ public class MemberDAO {
                 pstmt.setString(5, dto.getTel());
             }
 
-            int result = pstmt.executeUpdate();
-            if (result == 1) {
-                return true;
-            } else {
-                return false;
-            }
+            return pstmt.executeUpdate();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return 0;
     }
 
-    public boolean addTag(String id, ArrayList<String> list) {
+    public void addTag(String id, ArrayList<String> list) {
         try {
             String sql = "insert into tblUserHash values (seqUserHash.nextVal, ?, ?)";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, id);
 
-            int result = 0;
-
             for (String seq : list) {
                 pstmt.setString(2, seq);
-                 result = pstmt.executeUpdate();
+                pstmt.executeUpdate();
             }
-
-            if (result == 1) {
-                return true;
-            } else {
-                return false;
-            }
-
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     public ArrayList<String> getHashSeqList(ArrayList<HashTagDTO> list) {
@@ -297,5 +282,26 @@ public class MemberDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public ArrayList<String> getHashTagsById(String id) {
+        try {
+            String sql = "select  * from tblUserHash u inner join tblHashTag h on u.hseq = h.seq where id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            ArrayList<String> tagList = new ArrayList<>();
+
+            while (rs.next()) {
+                tagList.add(rs.getString("hashtag"));
+            }
+            return tagList;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 }

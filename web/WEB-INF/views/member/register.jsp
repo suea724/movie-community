@@ -222,12 +222,12 @@
         });
 
         $('form').submit(function() {
-            let id = $('#id').val();
             let pw = $('#pw').val();
             let pwCheck = $('#pw-check').val();
-            let nickname = $('#nickname').val();
             let name = $('#name').val();
             let tel = $('#tel').val();
+
+            console.log(tel);
 
             if (!/^[A-Za-z]{1}[A-Za-z0-9]{3,15}$/.test($('#id').val())) {
                 $('#id-check-result').css('color', 'red');

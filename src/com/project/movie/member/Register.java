@@ -7,7 +7,6 @@ import com.project.movie.dto.MemberDTO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -62,34 +61,51 @@ public class Register extends HttpServlet {
         dto.setPicture(profile);
 
         MemberDAO dao = new MemberDAO();
-        isRegistered = dao.addMember(dto);// 회원가입
+        int result = dao.addMember(dto);// 회원가입
 
-        ArrayList<HashTagDTO> list = new ArrayList<>();
+        // 태그 없을 때 빈 문자열로 들어옴
+        if (!genres.equals("") && genres != null) {
+            ArrayList<HashTagDTO> list = new ArrayList<>();
 
-        JSONParser parser = new JSONParser();
+            JSONParser parser = new JSONParser();
 
-        try {
-            JSONArray array = (JSONArray) parser.parse(genres);
+            try {
+                JSONArray array = (JSONArray) parser.parse(genres);
 
-            for (Object obj : array) {
+                for (Object obj : array) {
 
-                HashTagDTO hdto = new HashTagDTO();
+                    HashTagDTO hdto = new HashTagDTO();
 
-                JSONObject tag = (JSONObject) obj;
-                hdto.setHashtag((String)tag.get("value"));
+                    JSONObject tag = (JSONObject) obj;
+                    hdto.setHashtag((String)tag.get("value"));
 
-                list.add(hdto);
+                    list.add(hdto);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
+
+            // 회원이 선택한 태그 추가
+            ArrayList<String> seqList = dao.getHashSeqList(list);
+            dao.addTag(id, seqList);
+
         }
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;");
 
-        // 회원이 선택한 태그 추가
-        ArrayList<String> seqList = dao.getHashSeqList(list);
-        isAdded = dao.addTag(id, seqList);
+        PrintWriter writer = resp.getWriter();
 
-        if (isRegistered && isAdded) {
+        if (result == 1) {
             resp.sendRedirect("/movie/member/login.do");
+        } else {
+            writer.println("<html>");
+            writer.println("<body>");
+            writer.println("<script>");
+            writer.println("alert('회원가입 실패')");
+            writer.println("history.back();");
+            writer.println("</script>");
+            writer.println("</body>");
+            writer.println("<html>");
         }
     }
 }
