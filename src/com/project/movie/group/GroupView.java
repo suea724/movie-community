@@ -1,5 +1,6 @@
 package com.project.movie.group;
 
+import com.project.movie.dto.CommentDTO;
 import com.project.movie.dto.MemberDTO;
 import com.project.movie.dto.PostDTO;
 
@@ -83,7 +84,13 @@ public class GroupView extends HttpServlet {
         //- 출력 데이터 조작하기
         dto.setContent(dto.getContent().replace("\r\n", "<br>"));
 
+        List<CommentDTO> clist = dao.getComment(seq);
+
+        List<Integer> glist = dao.getGoodBad(seq);
+
+        req.setAttribute("glist", glist);
         req.setAttribute("dto", dto);
+        req.setAttribute("clist", clist);
         req.setAttribute("list", list);
         req.setAttribute("group", group);
 

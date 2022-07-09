@@ -1,6 +1,7 @@
 package com.project.movie.group;
 
 import com.project.movie.DBUtil;
+import com.project.movie.dto.CommentDTO;
 import com.project.movie.dto.PostDTO;
 
 import java.sql.Connection;
@@ -172,7 +173,7 @@ public class GroupDAO {
 
                 sql = String.format("select * from (select gp.*, rownum as rnum from vwGroupPost gp inner join tblPostGroup pg on gp.seq = pg.pseq where pg.gseq = %s %s) where rnum between %s and %s", map.get("group"), where, map.get("begin"), map.get("end"));
             } else {
-                sql = String.format("select * from (select gp.*, rownum as rnum from vwGroupPost gp inner join tblPostGroup pg on gp.seq = pg.pseq inner join tblPostHash ph on gp.seq = ph.pseq inner join tblHashTag ht on ph.hseq = ht.seq where pg.gseq = %s and ht.hashtag = %s) where rnum between %s and %s", map.get("group"), map.get("tag"), map.get("begin"), map.get("end"));
+                sql = String.format("select * from (select gp.*, rownum as rnum from vwGroupPost gp inner join tblPostGroup pg on gp.seq = pg.pseq inner join tblPostHash ph on gp.seq = ph.pseq inner join tblHashTag ht on ph.hseq = ht.seq where pg.gseq = %s and ht.hashtag = '%s') where rnum between %s and %s", map.get("group"), map.get("tag"), map.get("begin"), map.get("end"));
 
             }
 
@@ -346,18 +347,360 @@ public class GroupDAO {
         return null;
     }
 
-    public int GroupEdit(String seq) {
+    public int editCheck(String seq, String id) {
 
         try {
 
-            String sql = "";
+            String sql = "select count(*) as cnt from tblPost where id = ? and seq = ?";
+
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, id);
+            pstat.setString(2, seq);
+
+            rs = pstat.executeQuery();
+
+            if (rs.next()) {
+                return Integer.parseInt(rs.getString("cnt"));
+            }
+
 
         } catch (Exception e) {
-            System.out.println("GroupDAO.GroupEdit");
+            System.out.println("GroupDAO.idCheck");
             e.printStackTrace();
         }
 
         return 0;
+    }
+
+    public int groupEdit(PostDTO dto) {
+
+        try {
+
+            String sql = "update tblPost set title = ?, content = ? where seq = ?";
+
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, dto.getTitle());
+            pstat.setString(2, dto.getContent());
+            pstat.setString(3, dto.getSeq());
+
+            return pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.groupEdit");
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public int deleteHashTag(String seq) {
+
+        try {
+
+            String sql = "delete from tblPostHash where pseq = ?";
+
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+
+            return pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.deleteHashTag");
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public String getId(String seq) {
+
+        try {
+
+            String sql = "select * from tblPost where seq = ?";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+
+            rs = pstat.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("id");
+            }
+
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.getId");
+            e.printStackTrace();
+        }
+
+        return null;
 
     }
+
+    public int groupDelete(String seq) {
+
+        try {
+
+            String sql = "delete from tblPost where seq = ?";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+
+            return pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.groupDelete");
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public void groupDelete1(String seq) {
+
+        try {
+
+            String sql = "delete from tblPostGroup where pseq = ?";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+
+            pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.groupDelete1");
+            e.printStackTrace();
+        }
+
+    }
+
+    public void groupDelete2(String seq) {
+
+        try {
+
+            String sql = "delete from tblPostHash where pseq = ?";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+
+            pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.groupDelete2");
+            e.printStackTrace();
+        }
+    }
+
+    public void groupDelete3(String seq) {
+
+        try {
+
+            String sql = "delete from tblComment where pseq = ?";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+
+            pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.groupDelete2");
+            e.printStackTrace();
+        }
+
+    }
+
+    public List<CommentDTO> getComment(String seq) {
+
+        try {
+
+            String sql = "select c.*, (select nickname from tblUser where id = c.id) as nickname from tblComment c where pseq = ? order by seq desc";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+
+            rs = pstat.executeQuery();
+
+            List<CommentDTO> clist = new ArrayList<>();
+
+            while (rs.next()) {
+                CommentDTO dto = new CommentDTO();
+                dto.setNickname(rs.getString("nickname"));
+                dto.setContent(rs.getString("content"));
+                dto.setRegdate(rs.getString("regdate"));
+                dto.setId(rs.getString("id"));
+                dto.setSeq(rs.getString("seq"));
+
+                clist.add(dto);
+            }
+            return clist;
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.getComment");
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public int groupAddComment(Map<String, String> map) {
+
+        try {
+
+            String sql = "insert into tblComment values (seqComment.nextVal, ?, default, ?, ?)";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, map.get("content"));
+            pstat.setString(2, map.get("pseq"));
+            pstat.setString(3, map.get("id"));
+
+            return pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.groupAddComment");
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public CommentDTO groupGetComment() {
+
+        try {
+
+            String sql = "select c.*, (select nickname from tblUser where id = c.id) as nickname from tblComment c where seq = (select max(seq) from tblComment)";
+
+            stat = conn.createStatement();
+
+            rs = stat.executeQuery(sql);
+
+            CommentDTO dto = new CommentDTO();
+
+            if (rs.next()) {
+                dto.setSeq(rs.getString("seq"));
+                dto.setPseq(rs.getString("pseq"));
+                dto.setRegdate(rs.getString("regdate"));
+                dto.setContent(rs.getString("content"));
+                dto.setNickname(rs.getString("nickname"));
+                dto.setId(rs.getString("id"));
+
+                return dto;
+            }
+        } catch (Exception e) {
+            System.out.println("GroupDAO.groupGetComment");
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
+
+    public int groupEditComment(String seq, String content) {
+
+        try {
+
+            String sql = "update tblComment set content = ? where seq = ?";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, content);
+            pstat.setString(2, seq);
+
+            return pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.groupEditComment");
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public int groupDelComment(String seq) {
+
+        try {
+
+            String sql = "delete from tblComment where seq = ?";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+
+            return pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.groupDelComment");
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public void deleteGoodBad(String seq, String id) {
+        try {
+
+            String sql = "delete from tblGoodBad where id = ? and pseq = ?";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, id);
+            pstat.setString(2, seq);
+
+            pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.deleteGoodBad");
+            e.printStackTrace();
+        }
+    }
+
+    public int goodCount(String seq, String id) {
+
+        try {
+
+            String sql = "insert into tblGoodBad values(seqGoodBad.nextVal, ?, ?, 1, 0)";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, id);
+            pstat.setString(2, seq);
+
+            return pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.goodCount");
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public int badCount(String seq, String id) {
+        try {
+
+            String sql = "insert into tblGoodBad values(seqGoodBad.nextVal, ?, ?, 0, 1)";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, id);
+            pstat.setString(2, seq);
+
+            return pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.badCount");
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public List<Integer> getGoodBad(String seq) {
+
+        try {
+
+            String sql = "select (select count(*) as good from tblGoodBad where pseq = ? and good = 1) as good, (select count(*) as good from tblGoodBad where pseq = ? and bad = 1) as bad from dual";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+            pstat.setString(2, seq);
+
+            rs = pstat.executeQuery();
+            List<Integer> list = new ArrayList<>();
+            if (rs.next()) {
+                list.add(Integer.parseInt(rs.getString("good")));
+                list.add(Integer.parseInt(rs.getString("bad")));
+            }
+            return list;
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.getGoodBad");
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
 }

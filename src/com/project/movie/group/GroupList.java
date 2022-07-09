@@ -92,6 +92,7 @@ public class GroupList extends HttpServlet {
         map.put("isSearch", isSearch);
 
         String tag = req.getParameter("tag");
+        System.out.println("tag = " + tag);
         map.put("tag", tag);
 
         //페이징
@@ -113,11 +114,6 @@ public class GroupList extends HttpServlet {
 
         map.put("begin", begin + "");
         map.put("end", end + "");
-
-
-
-
-
 
         List<PostDTO> list = dao.groupList(map);
 

@@ -10,4 +10,6 @@ public class CommentDTO {
     private String regdate;
     private String pseq;
     private String id;
+
+    private String nickname;
 }
