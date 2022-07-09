@@ -12,7 +12,7 @@
     <div id="subboard">
       <div id="submenu">
         <ul>
-          <li><a href="/movie/group/grouplist.do?group=${group}">전체게시판</a></li>
+          <li><a href="/movie/group/grouplist.do?group=${group}">그룹 게시판</a></li>
           <li><a href="">그룹 정보</a></li>
           <li><a href="">그룹원 목록</a></li>
           <li><a href="">신청 목록</a></li>
@@ -22,7 +22,7 @@
       <div style="background-color: #DDDD; padding: 50px; width: 700px; margin-left: 25px;">
         <div><h1>${dto.title}</h1></div>
         <div style="display: flex; justify-content: space-between; margin-top: 20px;">
-          <div><span class="badge rounded-pill bg-warning">Lv.${auth.grade}</span><span>${dto.nickname}</span></div>
+          <div><span>${dto.nickname}</span></div>
           <div><span>${dto.regdate}</span><span style="margin-left: 20px;">조회수 : ${dto.readcount}</span></div>
         </div>
 
@@ -70,7 +70,6 @@
               <td>
                 <button class="btn btn-primary" type="button"
                         onclick="addComment();">
-                  <i class="fas fa-pen"></i>
                   쓰기
                 </button>
               </td>
@@ -78,19 +77,22 @@
           </table>
           <input type="hidden" name="pseq" value="${dto.seq}">
         </form>
-        <table class="table comment">
+        <table class="comment">
           <c:forEach items="${clist}" var="cdto">
             <tr>
-              <td>
-                <div>${cdto.content}</div>
-                <div>
+              <td style="width: 500px; color: black; background-color: #DDDD;">
+                <div style="display: flex; justify-content: left;">${cdto.content}</div>
+                <div style="display: flex; justify-content: left;">
                   <span>${cdto.regdate}</span>
                   <span>${cdto.nickname}</span>
-                  <c:if test="${cdto.id == auth.id}">
+
+                </div>
+                <c:if test="${cdto.id == auth.id}">
+                  <div style="display: flex; justify-content: right;">
                     <span class="btnspan"><a href="#!" onclick="delcomment(${cdto.seq});">[삭제]</a></span>
                     <span class="btnspan"><a href="#!" onclick="editcomment(${cdto.seq});">[수정]</a></span>
-                  </c:if>
-                </div>
+                  </div>
+                </c:if>
               </td>
             </tr>
           </c:forEach>
@@ -138,7 +140,7 @@
 
     if (!isEdit) {
 
-      const tempStr = $(event.target).parent().parent().prev().text();
+      const tempStr = $(event.target).parent().parent().prev().prev().text();
 
       $(event.target).parents('tr').after(temp);
 
@@ -155,17 +157,16 @@
 							<table class="tblEditComment">
 								<tr>
 									<td>
-										<textarea class="form-control" name="content" required id="txtcontent"></textarea>
+										<textarea style="resize: none; width: 350px" class="form-control" name="content" required id="txtcontent"></textarea>
 									</td>
 									<td>
-										<button class="btn btn-secondary" type="button"
+                                        <button class="btn btn-primary btn-sm" type="button"
+                                            onclick="editComment();">
+											수정하기
+										</button>
+										<button class="btn btn-secondary btn-sm" type="button"
 											onclick="cancelForm();">
 											취소하기
-										</button>
-										<button class="btn btn-primary" type="button"
-												onclick="editComment();">
-											<i class="fas fa-pen"></i>
-											수정하기
 										</button>
 									</td>
 								</tr>

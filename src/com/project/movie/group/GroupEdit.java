@@ -120,18 +120,13 @@ public class GroupEdit extends HttpServlet {
 
         GroupDAO dao = new GroupDAO();
 
-        String maxSeq = null;
-
         int result = 0;
         if (dtoId.getId() != null) {
             result = dao.groupEdit(dto);
 
-            maxSeq = dao.maxSeq();
-
         }
 
         dao.deleteHashTag(seq);
-        System.out.println("result = " + result);
 
         String hashtag = req.getParameter("tags-disabled-user-input");
 
@@ -146,7 +141,7 @@ public class GroupEdit extends HttpServlet {
 
                 String hseq = dao.getHashTagSeq(tag);
 
-                dao.addTagging(maxSeq, hseq);
+                dao.addTagging(seq, hseq);
             }
 
 
@@ -156,7 +151,7 @@ public class GroupEdit extends HttpServlet {
 
         if (result == 1){
             //성공
-            resp.sendRedirect(String.format("/movie/group/groupview.do?group=%s&seq=%s", group, maxSeq));
+            resp.sendRedirect(String.format("/movie/group/groupview.do?group=%s&seq=%s", group, seq));
         } else {
             //실패
         }

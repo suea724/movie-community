@@ -10,17 +10,11 @@
     <%@ include file="/WEB-INF/inc/header.jsp"%>
 
     <section>
-        <div style="display: flex; justify-content: right;">
-            <select class="form-select" style="margin-right: 40px; margin-bottom: 20px; width: 130px;">
-                <option value="1" selected>최신순</option>
-                <option value="2">조회순</option>
-                <option value="3">오래된순</option>
-            </select>
-        </div>
+
         <div id="subboard">
             <div id="submenu">
                 <ul>
-                    <li><a href="/movie/group/grouplist.do?group=${group}">전체게시판</a></li>
+                    <li><a href="/movie/group/grouplist.do?group=${group}">그룹 게시판</a></li>
                     <li><a href="">그룹 정보</a></li>
                     <li><a href="">그룹원 목록</a></li>
                     <li><a href="">신청 목록</a></li>
@@ -39,7 +33,7 @@
                         <tr class="table-hover">
                             <td>${dto.seq}</td>
                             <td><a href="/movie/group/groupview.do?group=${group}&seq=${dto.seq}" style="color: white">${dto.title} <span style="color: red; text-decoration:underline;">${dto.commentcount}</span></a></td>
-                            <td><span class="badge rounded-pill bg-warning">Lv.${auth.grade}</span>${dto.nickname}</td>
+                            <td>${dto.nickname}</td>
                             <td>${dto.regdate}</td>
                             <td>${dto.readcount}</td>
                         </tr>

@@ -37,6 +37,7 @@ public class GroupDel extends HttpServlet {
             dao.groupDelete1(seq);
             dao.groupDelete2(seq);
             dao.groupDelete3(seq);
+            dao.groupDelete4(seq);
 
             result = dao.groupDelete(seq);
         } else {

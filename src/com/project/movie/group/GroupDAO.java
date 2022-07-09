@@ -498,10 +498,25 @@ public class GroupDAO {
             pstat.executeUpdate();
 
         } catch (Exception e) {
-            System.out.println("GroupDAO.groupDelete2");
+            System.out.println("GroupDAO.groupDelete3");
             e.printStackTrace();
         }
 
+    }
+    public void groupDelete4(String seq) {
+
+        try {
+
+            String sql = "delete from tblGoodbad where pseq = ?";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+
+            pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.groupDelete4");
+            e.printStackTrace();
+        }
     }
 
     public List<CommentDTO> getComment(String seq) {
@@ -701,6 +716,7 @@ public class GroupDAO {
 
         return null;
     }
+
 
 
 }

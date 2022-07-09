@@ -85,6 +85,9 @@ public class GroupView extends HttpServlet {
         dto.setContent(dto.getContent().replace("\r\n", "<br>"));
 
         List<CommentDTO> clist = dao.getComment(seq);
+        for (CommentDTO cd : clist) {
+            cd.setContent(cd.getContent().replace("\r\n", "<br>"));
+        }
 
         List<Integer> glist = dao.getGoodBad(seq);
 

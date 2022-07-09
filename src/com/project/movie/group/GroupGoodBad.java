@@ -32,8 +32,6 @@ public class GroupGoodBad extends HttpServlet {
         String seq = req.getParameter("seq");
         String goodbad = req.getParameter("goodbad");
 
-        System.out.println("goodbad = " + goodbad);
-
         GroupDAO dao = new GroupDAO();
 
         dao.deleteGoodBad(seq, dtoId.getId());
@@ -45,8 +43,6 @@ public class GroupGoodBad extends HttpServlet {
         } else {
             result = dao.badCount(seq, dtoId.getId());
         }
-
-        System.out.println("result = " + result);
 
         List<Integer> glist = dao.getGoodBad(seq);
 
