@@ -19,25 +19,26 @@
         border-radius: 30px;
         padding: 50px;
         margin-bottom: 50px;
+        !important; color: black;
     }
 
     h2 {
         text-align: center;
     }
 
-    #table {
+    #mypage > #tbl {
         width: 500px;
         margin: 50px auto;
     }
 
-    #table tr:last-child {
+    #mypage > #tbl tr:last-child {
         border: none;
     }
 
-    #table th {width: 150px;}
+    #mypage > #tbl th {width: 150px;}
 
 
-    #table tr {
+    #mypage > #tbl tr {
         height: 40px;
     }
 
@@ -45,8 +46,17 @@
         padding: 0;
     }
 
+    #profile-row {
+        background-color: lightgrey;
+    }
+
     .tagify__input {
         height: 30px;
+    }
+
+    section > #box > #mypage > table tr th, section > #box > #mypage > table tr td {
+        color: black;
+        text-align: left;
     }
 
 </style>
@@ -62,7 +72,7 @@
             <div id="mypage">
                 <h2>내 정보</h2>
 
-                <table id="table">
+                <table id="tbl">
                     <tr id="profile-row">
                         <th>프로필 사진</th>
                         <td colspan="2">

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <header>
-    <div id="mainLogo"><a href="/"><img src="/movie/asset/images/logo.png" alt="logo"></a></div>
+    <div id="mainLogo"><a href="/movie"><img src="/movie/asset/images/logo.png" alt="logo"></a></div>
     <nav id="menubar">
         <ul>
             <li><a href="/movie/main/mainlist.do">전체</a></li>

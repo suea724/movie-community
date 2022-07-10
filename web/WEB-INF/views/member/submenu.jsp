@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div id="submenu">
+<div id="mypage-submenu">
     <div id="profile-box">
         <div class="image-container" id="submenu-profile">
             <img src="/movie/asset/images/${auth.picture}" class="profile-img">

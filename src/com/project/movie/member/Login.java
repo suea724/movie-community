@@ -44,7 +44,6 @@ public class Login extends HttpServlet {
 
             mdto.setPostCnt(postsCnt);
             mdto.setCommentCnt(commentCnt);
-
             mdto.setGrade(grade);
 
             HttpSession session = req.getSession();

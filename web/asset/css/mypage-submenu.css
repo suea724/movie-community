@@ -6,7 +6,7 @@
     text-align: center;
 }
 
-#submenu #submenu-profile {
+#mypage-submenu #submenu-profile {
     display: block;
     margin: 0 auto;
 }
@@ -35,21 +35,21 @@
     margin: auto;
 }
 
-#submenu {
-    width: 200px;
-    margin-right: 50px;
+#mypage-submenu {
+    width: 300px;
+    margin-right: 30px;
     position: relative;
     left: 0;
     top: 0;
     color: white;
 }
 
-#submenu ul > li {
+#mypage-submenu ul > li {
     list-style: none;
     margin-left: 0;
 }
 
-#submenu ul > li > a {
+#mypage-submenu ul > li > a {
     color: white;
 }
 
