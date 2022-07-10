@@ -36,9 +36,9 @@
             </div>
         </div>
         <c:if test="${not empty auth}">
-        <div id="add" style="display: flex; justify-content: right">
-            <input type="button" class="btn btn-danger" value="글 쓰기" onclick="location.href='/movie/group/groupadd.do?group=${group}';" style="margin-top: 20px; margin-right: 30px">
-        </div>
+            <div id="add" style="display: flex; justify-content: right">
+                <input type="button" class="btn btn-danger" value="글 쓰기" onclick="location.href='/movie/group/groupadd.do?group=${group}';" style="margin-top: 20px; margin-right: 30px">
+            </div>
         </c:if>
         <div style="justify-content: center; display: flex">
             ${pagebar}

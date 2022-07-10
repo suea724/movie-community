@@ -11,4 +11,10 @@ public class GroupDTO {
     private String recruitment;
     private String regdate;
     private String id;
+
+    private String rnum;
+    private String nickname;
+    private String state;
+    private String groupKing;
+
 }

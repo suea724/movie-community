@@ -1,0 +1,81 @@
+
+.btn.btn-click {
+    height: 22px;
+    width: 56px;
+    padding: 0px;
+    font-size: 12px;
+}
+
+#menubar li:nth-child(4) > a {
+    color: #578786;
+}
+
+#submenu li:nth-child(1) > a {
+    color: #578786;
+}
+
+
+#selbox {
+    display: flex;
+    justify-content: right;
+
+
+}
+
+#selbox > select {
+    margin-right: 35px;
+    margin-bottom: 8px;
+}
+
+
+section > div:nth-child(3) {
+    display: flex;
+    justify-content: right;
+    margin-right: 35px;
+    margin-top: 8px;
+}
+
+
+#searchBox {
+    display: flex;
+    justify-content: center;
+}
+
+#select-size {
+    width: 100px;
+}
+
+.form-select.form-select-sm {
+    width: 200px;
+}
+
+
+/*creategroup.jsp*/
+section > div > div > table tr:nth-child(1) {
+}
+
+.table.tblCGroup {
+
+}
+
+table tr td {
+    text-align: left;
+}
+
+.table.tblCGroup td{
+    text-align: left;
+}
+
+
+
+#cGroup td {
+    text-align: left;
+}
+
+.mtext {
+    text-align: left;
+}
+
+
+
+
