@@ -2,7 +2,9 @@ package com.project.movie.group.mygroup;
 
 import com.project.movie.DBUtil;
 import com.project.movie.dto.GroupDTO;
+import com.project.movie.dto.HashTagDTO;
 
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -69,7 +71,7 @@ public class MyGroupDAO {
                 return rs.getString("seq");
             }
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("MyGroupDAO_getHashTagSeq");
             e.printStackTrace();
         }
@@ -89,11 +91,11 @@ public class MyGroupDAO {
             rs = stat.executeQuery(sql);
 
             if (rs.next()) {
-                return  rs.getString("seq");
+                return rs.getString("seq");
             }
 
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("MyGroupDAO_getSeq");
             e.printStackTrace();
 
@@ -108,7 +110,7 @@ public class MyGroupDAO {
 
         try {
 
-            String sql ="select hashtag from tblHashTag order by hashtag asc";
+            String sql = "select hashtag from tblHashTag order by hashtag asc";
 
             stat = conn.createStatement();
 
@@ -123,7 +125,7 @@ public class MyGroupDAO {
             return list;
 
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("MyGroupDAO_taglist");
             e.printStackTrace();
 
@@ -143,7 +145,7 @@ public class MyGroupDAO {
 
             return pstat.executeUpdate();
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("MyGroupDAO_addTagging");
             e.printStackTrace();
 
@@ -169,7 +171,7 @@ public class MyGroupDAO {
             return pstat.executeUpdate();
 
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("MyGroupDAO_add");
             e.printStackTrace();
 
@@ -215,7 +217,7 @@ public class MyGroupDAO {
 
             return list;
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("MyGroupDAO_list");
             e.printStackTrace();
 
@@ -247,7 +249,7 @@ public class MyGroupDAO {
                 return rs.getInt("cnt");
             }
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("MyGroupDAO_getTotalCount");
             e.printStackTrace();
 
@@ -272,7 +274,7 @@ public class MyGroupDAO {
             return pstat.executeUpdate();
 
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("MyGroupDAO_add");
             e.printStackTrace();
 
@@ -316,7 +318,7 @@ public class MyGroupDAO {
 
             return list;
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("MyGroupDAO_list");
             e.printStackTrace();
 
@@ -325,25 +327,164 @@ public class MyGroupDAO {
     }
 
 
-
     //그룹 정보페이지에 넣을 정보 가져오기
-    public ArrayList<GroupDTO> groupinfo(String seq) {
+    public GroupDTO groupinfo(String seq) {
 
         try {
 
-            String sql = "select * from tblGroup where seq = ?";
+            String sql = "select g.*, (select nickname from tblUser where id = g.id) as nickname, (select count(*) from tblUserGroup where gseq = g.seq) as cnt from tblGroup g where seq = ?";
+
+            pstat = conn.prepareStatement(sql);
+
+            pstat.setString(1, seq);
+
+            rs = pstat.executeQuery();
 
 
+            if (rs.next()) {
+
+                GroupDTO dto = new GroupDTO();
+
+                dto.setSeq(rs.getString("seq"));
+                dto.setName(rs.getString("name"));
+                dto.setInfo(rs.getString("info"));
+                dto.setRecruitment(rs.getString("recruitment"));
+                dto.setRegdate(rs.getString("regdate"));
+                dto.setNickname(rs.getString("nickname")); //그룹장 찾기
+                dto.setId(rs.getString("id"));
+                dto.setCnt(rs.getString("cnt")); //그룹 인원수
+
+                return dto;
+
+            }
 
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("MyGroupDAO_groupinfo");
             e.printStackTrace();
 
         }
         return null;
     }
+
+
+    //그룹 해시태그 알아내기
+    public ArrayList<String> groupHash(String seq) {
+
+        try {
+
+            String sql = "select ht.hashtag as hashtag from tblGroup g inner join tblGroupHash gh on g.seq = gh.gseq inner join tblHashtag ht on gh.hseq = ht.seq where g.seq = ?";
+
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+
+            rs = pstat.executeQuery();
+
+            ArrayList<String> list = new ArrayList<String>();
+
+            while (rs.next()) {
+
+                list.add(rs.getString("hashtag"));
+
+            }
+            return list;
+
+        } catch (Exception e) {
+            System.out.println("MyGroupDAO_groupHash");
+            e.printStackTrace();
+
+        }
+
+        return null;
+
+
+    }
+
+    public GroupDTO findGroup(String seq) {
+
+        try {
+
+            String sql = "select * from tblGroup where seq = ?";
+
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+
+            rs = pstat.executeQuery();
+
+            if (rs.next()) {
+                GroupDTO dto = new GroupDTO();
+
+                dto.setSeq(seq);
+                dto.setName(rs.getString("name"));
+                dto.setInfo(rs.getString("info"));
+                dto.setRecruitment(rs.getString("recruitment"));
+
+                return dto;
+            }
+
+        } catch(Exception e) {
+            System.out.println("MyGroupDAO_findGroup");
+            e.printStackTrace();
+
+        }
+
+        return null;
+    }
+
+
+    //해시태그 삭제
+    public int delHashTag(String seq) {
+
+        try {
+
+            String sql = "delete from tblGROUPHASH where gseq = ?";
+
+            pstat = conn.prepareStatement(sql);
+
+            pstat.setString(1, seq);
+
+            return pstat.executeUpdate();
+
+
+
+        } catch(Exception e) {
+            System.out.println("MyGroupDAO_delHashTag");
+            e.printStackTrace();
+
+        }
+            return 0;
+    }
+
+    //그룹 수정
+    public int edit(GroupDTO gdto) {
+
+        try {
+
+            String sql = "update tblGroup set name = ?, info = ?, recruitment = ? where seq = ?";
+
+
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, gdto.getName());
+            pstat.setString(2, gdto.getInfo());
+            pstat.setString(3, gdto.getRecruitment());
+            pstat.setString(4, gdto.getSeq());
+
+            return pstat.executeUpdate();
+
+
+        } catch (Exception e) {
+            System.out.println("MyGroupDAO_add");
+            e.printStackTrace();
+
+        }
+
+        return 0;
+
+    }
 }
+
+
+
 
 
 
