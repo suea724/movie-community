@@ -56,6 +56,7 @@
 
     section > #box > #mypage > table tr th, section > #box > #mypage > table tr td {
         color: black;
+        text-align: left;
     }
 
 </style>
