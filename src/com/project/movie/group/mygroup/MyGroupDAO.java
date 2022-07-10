@@ -296,7 +296,11 @@ public class MyGroupDAO {
 
             rs = pstat.executeQuery();
 
-            int i = Integer.parseInt(list.get(list.size() - 1).getRnum()) + 1;
+            int i = 0;
+            if(list.size() != 0) {
+
+                i = Integer.parseInt(list.get(list.size() - 1).getRnum()) + 1;
+            }
 
             while (rs.next()) {
 
