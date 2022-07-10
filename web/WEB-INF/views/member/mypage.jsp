@@ -98,7 +98,7 @@
                     </tr>
                     <tr id="tel-row">
                         <th>전화번호</th>
-                        <td id="tel" id="org-tel">${auth.tel}</td>
+                        <td class="tel" id="org-tel">${auth.tel}</td>
                         <td><input type="button" value="수정" class="btn btn-secondary btn-sm" id="update-tel-btn"></td>
                     </tr>
                     <tr class="line">
@@ -205,7 +205,7 @@
         temp += '전화번호';
         temp += '</th>';
         temp += '<td>';
-        temp += '<input type="text" name="tel" value="\''+ $('#org-tel').html() +'\'" class="form-control" id="new-tel">';
+        temp += '<input type="text" name="tel" value="'+ $('#org-tel').html() +'" class="form-control" id="new-tel">';
         temp += '</td>';
         temp += '<td>';
         temp += '<input type="button" value="수정완료" class="btn btn-primary btn-sm" id="tel-complete-btn">';

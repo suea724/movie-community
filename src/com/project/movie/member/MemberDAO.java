@@ -1,9 +1,7 @@
 package com.project.movie.member;
 
 import com.project.movie.DBUtil;
-import com.project.movie.dto.HashTagDTO;
-import com.project.movie.dto.LoginDTO;
-import com.project.movie.dto.MemberDTO;
+import com.project.movie.dto.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -328,6 +326,115 @@ public class MemberDAO {
             pstmt.setString(2, id);
 
             return pstmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
+    public ArrayList<MyPostsDTO> getMyPosts(String id, int page) {
+        try {
+
+            int begin = (page - 1) * 20 + 1;
+            int end = page * 20;
+
+            String sql = "select * from vwMyposts where id = ? and rnum between ? and ?";
+            pstmt  = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            pstmt.setString(2, String.valueOf(begin));
+            pstmt.setString(3, String.valueOf(end));
+
+            rs = pstmt.executeQuery();
+
+            ArrayList<MyPostsDTO> list = new ArrayList<>();
+
+            while (rs.next()) {
+
+                MyPostsDTO dto = new MyPostsDTO();
+
+                dto.setSeq(rs.getString("seq"));
+                dto.setType(rs.getString("type"));
+                dto.setTitle(rs.getString("title"));
+                dto.setRegdate(rs.getString("regdate"));
+                dto.setReadcnt(rs.getString("readcount"));
+
+                list.add(dto);
+            }
+            return list;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
+    public int getTotalCount(String id) {
+        try {
+            String sql = "select count(*) as cnt from tblPost where id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return Integer.parseInt(rs.getString("cnt"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public ArrayList<MyCommentsDTO> getMyComments(String id, int page) {
+
+        try {
+            int begin = (page - 1) * 20 + 1;
+            int end = page * 20;
+
+            String sql = "select * from (select rownum as rnum, t.* from (select c.seq, c.content, c.regdate, p.type, p.title, u.id  from tblComment c inner join tblUser u on c.id = u.id " +
+                    "inner join tblPost p on c.pseq = p.seq where u.id = ? order by seq desc) t) where rnum between ? and ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            pstmt.setString(2, String.valueOf(begin));
+            pstmt.setString(3, String.valueOf(end));
+            rs = pstmt.executeQuery();
+
+            ArrayList<MyCommentsDTO> list = new ArrayList<>();
+
+            while (rs.next()) {
+
+                MyCommentsDTO dto = new MyCommentsDTO();
+
+                dto.setSeq(rs.getString("seq"));
+                dto.setTitle(rs.getString("title"));
+                dto.setContent(rs.getString("content"));
+                dto.setType(rs.getString("type"));
+                dto.setRegdate(rs.getString("regdate"));
+
+                list.add(dto);
+            }
+            return list;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public int getTotalComments(String id) {
+        try {
+            String sql = "select count(*) as cnt from tblComment c inner join tblUser u on c.id = u.id inner join tblPost p on c.pseq = p.seq where u.id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return Integer.parseInt(rs.getString("cnt"));
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
