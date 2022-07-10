@@ -46,9 +46,9 @@ public class CreateGroup extends HttpServlet {
         String info = request.getParameter("content");
         String recruitment = request.getParameter("people");
 
-        System.out.println(name);
-        System.out.println(info);
-        System.out.println(recruitment);
+//        System.out.println(name);
+//        System.out.println(info);
+//        System.out.println(recruitment);
 
         GroupDTO gdto = new GroupDTO();
 

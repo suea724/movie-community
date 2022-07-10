@@ -323,6 +323,26 @@ public class MyGroupDAO {
         }
         return null;
     }
+
+
+
+    //그룹 정보페이지에 넣을 정보 가져오기
+    public ArrayList<GroupDTO> groupinfo(String seq) {
+
+        try {
+
+            String sql = "select * from tblGroup where seq = ?";
+
+
+
+
+        } catch(Exception e) {
+            System.out.println("MyGroupDAO_groupinfo");
+            e.printStackTrace();
+
+        }
+        return null;
+    }
 }
 
 
