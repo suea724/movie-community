@@ -197,7 +197,7 @@ public class MemberDAO {
 
     public int del(String id) {
         try {
-            String sql = "delete from tblUser where id = ?";
+            String sql = "update tblUser set name = 'not used', nickname = 'not used', password = 'not used', tel = 'not used', picture = 'not used', joindate = sysdate where id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, id);
             return pstmt.executeUpdate();
@@ -303,5 +303,35 @@ public class MemberDAO {
         }
         return null;
 
+    }
+
+    public int updateNickname(String nickname, String id) {
+        try {
+            String sql = "update tblUser set nickname = ? where id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, nickname);
+            pstmt.setString(2, id);
+
+            return pstmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int updateTel(String tel, String id) {
+        try {
+            String sql = "update tblUser set tel = ? where id = ?";
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, tel);
+            pstmt.setString(2, id);
+
+            return pstmt.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }
