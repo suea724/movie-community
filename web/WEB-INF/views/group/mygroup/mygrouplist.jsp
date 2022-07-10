@@ -4,7 +4,33 @@
     <title>Movie Community</title>
     <%@ include file="/WEB-INF/inc/asset.jsp"%>
     <link rel="stylesheet" href="/movie/asset/css/mygroup.css">
+    <style>
+        .table {
+            color: white;
+            text-align: center;
+        }
+
+        .table tr {
+
+        }
+
+        #addg {
+            display: flex;
+            justify-content: right;
+
+        }
+
+        #addg > button {
+            margin-right: 10px;
+        }
+
+        #board > #table > tbody > tr > td {
+            text-align: center;
+        }
+
+    </style>
 </head>
+
 <body id="body">
 <main>
     <%@ include file="/WEB-INF/inc/header.jsp"%>
@@ -31,133 +57,48 @@
                     <table class="table" style="width: 1000px">
                         <tr>
                             <th>번호</th>
-                            <th>제목</th>
-                            <th>작성자</th>
-                            <th>작성날짜</th>
-                            <th>조회수</th>
+                            <th>그룹명</th>
+                            <th>그룹장</th>
+                            <th>운영중/참여중/참여신청</th>
+                            <th></th>
                         </tr>
+                        <c:forEach items="${list}" var="dto">
                         <tr class="table-hover">
-                            <td>1</td>
-                            <td>호러영화 매니아 그룹 모집</td>
-                            <td>홍길동</td>
+                            <td>${dto.rnum}</td>
+                            <td>${dto.name}</td>
+                            <td>${dto.groupKing}</td>
+                            <c:if test="${dto.state == 1}">
                             <td>운영중</td>
-                            <td><input type="button" class="btn btn-success btn-click" value="입장하기"></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>마녀2 재밌다</td>
-                            <td>아무개</td>
+                            </c:if>
+                            <c:if test="${dto.state == 0}">
                             <td>참여중</td>
-                            <td><input type="button" class="btn btn-success btn-click" value="입장하기"></td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>마녀2 재밌다</td>
-                            <td>하하하</td>
+                            </c:if>
+                            <c:if test="${dto.state == 2}">
                             <td>참여신청</td>
+                            </c:if>
+
+                            <c:if test="${(dto.state == 1) || (dto.state == 0)}">
+                            <td><input type="button" class="btn btn-success btn-click" value="입장하기" onclick="location.href='/movie/group/grouplist.do?seq=${dto.seq}'"></td>
+                            </c:if>
+
+                            <c:if test="${dto.state == 2}">
                             <td><input type="button" class="btn btn-danger btn-click" value="신청취소"></td>
+                            </c:if>
+
                         </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>마녀2 재밌다</td>
-                            <td>길동이</td>
-                            <td>2022-07-05</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>마녀2 재밌다</td>
-                            <td>길동이</td>
-                            <td>2022-07-05</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>마녀2 재밌다</td>
-                            <td>길동이</td>
-                            <td>2022-07-05</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>마녀2 재밌다</td>
-                            <td>길동이</td>
-                            <td>2022-07-05</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>마녀2 재밌다</td>
-                            <td>길동이</td>
-                            <td>2022-07-05</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>마녀2 재밌다</td>
-                            <td>길동이</td>
-                            <td>2022-07-05</td>
-                            <td>100</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>마녀2 재밌다</td>
-                            <td>길동이</td>
-                            <td>2022-07-05</td>
-                            <td>100</td>
-                        </tr>
+                        </c:forEach>
+
+                        <c:if test="${list.size() == 0}">
+                            <tr>
+                                <td colspan="5">게시물이 없습니다.</td>
+                            </tr>
+                        </c:if>
+
                     </table>
                 </div>
             </div>
-
             <div id="addg">
-                <input type="button" value="그룹 생성하기" class="btn btn-primary" onclick="location.href='/movie/group/mygroup/creategroup.do'">
-            </div>
-
-
-            <%-- 페이지--%>
-            <div style="text-align: center">
-                <%--
-                <select id="pagebar">
-                    <c:forEach var="i" begin="1" end="${totalPage}">
-                    <option value="${i}">${i}페이지</option>
-                    </c:forEach>
-                </select>
-                 --%>
-                <%--${pagebar}--%>
-            </div>
-
-            <%-- 검색--%>
-            <div id="searchBox">
-                <!-- 검색에 한하여 POST가 아닌 GET방식을 씀  -->
-                <form method="GET" action="/toy/board/list.do">
-                    <table class="search">
-                        <tr>
-                            <td>
-                                <select name="column" class="form-control">
-                                    <option value="subject">제목</option>
-                                    <option value="content">내용</option>
-                                    <option value="name">이름</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="text" name="word" class="form-control" placeholder="검색어를 입력하시오." required>
-                            </td>
-                            <td>
-                                <button class="btn btn-primary">
-                                    검색하기
-                                </button>
-
-                                <c:if test="${map.isSearch == 'y'}">
-                                    <button class="btn btn-secondary" type="button"
-                                            onclick="location.href='/toy/board/list.do';">
-                                        중단하기
-                                    </button>
-                                </c:if>
-                            </td>
-                        </tr>
-                    </table>
-                </form>
+                <button type="submit" class="btn btn-primary" onclick="location.href='/movie/group/mygroup/creategroup.do'">그룹 생성하기</button>
             </div>
 
 

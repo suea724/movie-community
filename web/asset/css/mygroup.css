@@ -66,9 +66,7 @@ table tr td {
     text-align: left;
 }
 
-#board > table > tbody > tr:nth-child(2) > td {
-    text-align: left;
-}
+
 
 #cGroup td {
     text-align: left;
