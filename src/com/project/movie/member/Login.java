@@ -36,18 +36,14 @@ public class Login extends HttpServlet {
         MemberDAO dao = new MemberDAO();
         MemberDTO mdto = dao.login(dto);
 
-        System.out.println("mdto = " + mdto);
-
         if (mdto != null) { // 로그인 성공
 
             int postsCnt = dao.getPostsCount(mdto);
             int commentCnt = dao.getCommentCount(mdto);
             int grade = (postsCnt + commentCnt) / 10;
 
-            System.out.println("commentCnt = " + commentCnt);
-            System.out.println("postsCnt = " + postsCnt);
-             System.out.println(grade);
-
+            mdto.setPostCnt(postsCnt);
+            mdto.setCommentCnt(commentCnt);
             mdto.setGrade(grade);
 
             HttpSession session = req.getSession();

@@ -4,10 +4,10 @@
     <div id="mainLogo"><a href="/"><img src="/movie/asset/images/logo.png" alt="logo"></a></div>
     <nav id="menubar">
         <ul>
-            <li><a href="">전체</a></li>
-            <li><a href="">리뷰</a></li>
-            <li><a href="">자유</a></li>
-            <li><a href="">그룹</a></li>
+            <li><a href="/movie/main/mainlist.do">전체</a></li>
+            <li><a href="/movie/main/mainlist.do?type=1">리뷰</a></li>
+            <li><a href="/movie/main/mainlist.do?type=2">자유</a></li>
+            <li><a href="/movie/group/mygroup/mygrouplist.do">그룹</a></li>
 
         </ul>
     </nav>
