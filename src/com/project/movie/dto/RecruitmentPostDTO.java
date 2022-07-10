@@ -12,4 +12,7 @@ public class RecruitmentPostDTO {
     private String readcount;
     private String id;
     private String gseq;
+
+    private String nickname;
+
 }
