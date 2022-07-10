@@ -78,7 +78,7 @@
                             </c:if>
 
                             <c:if test="${(dto.state == 1) || (dto.state == 0)}">
-                            <td><input type="button" class="btn btn-success btn-click" value="입장하기" onclick="location.href='/movie/group/grouplist.do?seq=${dto.seq}'"></td>
+                            <td><input type="button" class="btn btn-success btn-click" value="입장하기" onclick="location.href='/movie/group/grouplist.do?group=${dto.seq}'"></td>
                             </c:if>
 
                             <c:if test="${dto.state == 2}">
