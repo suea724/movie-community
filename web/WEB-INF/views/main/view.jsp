@@ -58,7 +58,8 @@
         <hr>
 
         <%--댓글 쓰기 창--%>
-        <form id="addCommentForm">
+        <c:if test="${not empty auth.id}">
+        <form id="addCommentForm" style="display: flex; justify-content: center;">
             <table class="tblAddComment">
                 <tr>
                     <td>
@@ -74,6 +75,7 @@
             </table>
             <input type="hidden" name="pseq" value="${dto.seq}">
         </form>
+        </c:if>
 
         <%--댓글--%>
         <div id="contentArea" style="display: flex; justify-content: center; margin-top: 30px;">
@@ -124,7 +126,7 @@
                 //alert(result.result);
                 if (result.result == "1") {
                     //성공 > 새로 작성된 댓글을 목록에 반영하기
-                    alert("dddddd");
+                    //alert("dddddd");
                     let temp = `<tr>
               <td style="width: 500px; color: black; background-color: #DDDD;">
                 <div style="display: flex; justify-content: left; font-weight: bold;"><span>\${result.nickname}</span></div>

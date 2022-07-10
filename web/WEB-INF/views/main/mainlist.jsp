@@ -35,7 +35,7 @@
                     <c:forEach items="${list}" var="dto">
                     <tr class="table-hover">
                         <td>${dto.seq}</td>
-                        <td><a href="/movie/main/view.do?seq=${dto.seq}" style="color: white">${dto.title}</a></td>
+                        <td><a href="/movie/main/view.do?seq=${dto.seq}" style="color: white">${dto.title}</a><span style="color: red; text-decoration:underline;">${dto.commentcount}</span></td>
                         <td>${dto.nickname}</td>
                         <td>${dto.regdate}</td>
                         <td>${dto.readcount}</td>
@@ -44,9 +44,11 @@
                 </table>
             </div>
         </div>
+        <c:if test="${not empty auth.id}">
         <div class="btns" style="display: flex; justify-content: right; margin-top: 20px; margin-right: 95px;"> <%--글쓰기 버튼 추가--%>
             <input type="button" id="addBtn" class="btn btn-primary" value="글쓰기" onclick="location.href='/movie/main/add.do';">
         </div>
+        </c:if>
         <div id="pagebar" style="display: flex; justify-content: center;">
             ${pagebar}
         </div>

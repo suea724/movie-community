@@ -17,4 +17,6 @@ public class GroupDTO {
     private String state;
     private String groupKing;
 
+    private String cnt;
+
 }
