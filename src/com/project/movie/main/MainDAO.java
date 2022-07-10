@@ -126,8 +126,29 @@ public class MainDAO {
                 where = String.format("where %s like '%%%s%%'", map.get("column"), map.get("word"));
             }
 
-            sql = String.format("select * from (select a.*, rownum as rnum from vwMain a %s) where rnum between %s and %s",
-                    where, map.get("begin"), map.get("end"));
+            if(map.get("type").equals("0")) {
+
+                sql = String.format("select * from (select a.*, rownum as rnum from vwMain a %s) where rnum between %s and %s",
+                        where, map.get("begin"), map.get("end"));
+            } else if (map.get("type").equals("1")) {
+                if(where.equals("")) {
+
+                    sql = String.format("select * from (select a.*, rownum as rnum from vwMain a %s where type = 1) where rnum between %s and %s",
+                            where, map.get("begin"), map.get("end"));
+                } else {
+                    sql = String.format("select * from (select a.*, rownum as rnum from vwMain a %s and type = 1) where rnum between %s and %s",
+                            where, map.get("begin"), map.get("end"));
+                }
+            } else if (map.get("type").equals("2")) {
+                if(where.equals("")) {
+
+                    sql = String.format("select * from (select a.*, rownum as rnum from vwMain a %s where type = 2) where rnum between %s and %s",
+                            where, map.get("begin"), map.get("end"));
+                } else {
+                    sql = String.format("select * from (select a.*, rownum as rnum from vwMain a %s and type = 2) where rnum between %s and %s",
+                            where, map.get("begin"), map.get("end"));
+                }
+            }
 
             stat = conn.createStatement();
 

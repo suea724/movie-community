@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-@WebServlet("/main/mainlist.do")
+@WebServlet(urlPatterns = {"/main/mainlist.do", "/", "/index.do"})
 public class MainList extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -26,6 +26,12 @@ public class MainList extends HttpServlet {
         String column = req.getParameter("column"); //검색 카테고리
         String word = req.getParameter("word"); //검색 내용
         String isSearch = "n"; //검색 중인 상태 여부
+        
+        String type = req.getParameter("type"); //전체/리뷰/자유 받아오기
+
+        if(type == null) {
+            type = "0";
+        }
 
         //검색 중인 상태인지 아닌지 판단하기
         // 넘긴 값(검색 카테고리와 검색내용) 중 하나라도 비어있으면 검색중인 상태가 아니라고 판단
@@ -67,6 +73,7 @@ public class MainList extends HttpServlet {
 
         map.put("begin", begin + "");
         map.put("end", end + "");
+        map.put("type", type);
 
         HttpSession session = req.getSession();
 
