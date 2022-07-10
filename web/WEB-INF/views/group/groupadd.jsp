@@ -29,7 +29,7 @@
         </div>
       </div>
 
-      <input type="hidden" name="group" value="1">
+      <input type="hidden" name="group" value=${group}>
     </form>
 
   </section>
