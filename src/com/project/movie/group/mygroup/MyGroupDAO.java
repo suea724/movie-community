@@ -485,6 +485,46 @@ public class MyGroupDAO {
         return 0;
 
     }
+
+
+    //마이그룹 삭제하기
+    public int delMyGroup(String seq) {
+
+        try {
+
+
+            String sql = "delete from tblGroup where gseq = ?";
+
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+
+            return pstat.executeUpdate();
+
+
+        } catch(Exception e) {
+            System.out.println("MyGroupDAO_delMyGroup");
+            e.printStackTrace();
+
+        }
+
+        return 0;
+
+    }
+
+    public void delUserGroup(String seq) {
+
+        try {
+
+            String sql = "";
+
+
+        } catch(Exception e) {
+            System.out.println("MyGroupDAO_delUserGroup");
+            e.printStackTrace();
+
+        }
+
+    }
 }
 
 
