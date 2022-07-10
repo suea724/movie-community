@@ -46,7 +46,7 @@ public class Login extends HttpServlet {
 
             System.out.println("commentCnt = " + commentCnt);
             System.out.println("postsCnt = " + postsCnt);
-             System.out.println(grade);
+            System.out.println(grade);
 
             mdto.setGrade(grade);
 
