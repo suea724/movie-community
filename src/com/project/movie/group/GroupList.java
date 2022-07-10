@@ -92,7 +92,6 @@ public class GroupList extends HttpServlet {
         map.put("isSearch", isSearch);
 
         String tag = req.getParameter("tag");
-        System.out.println("tag = " + tag);
         map.put("tag", tag);
 
         //페이징
@@ -204,8 +203,11 @@ public class GroupList extends HttpServlet {
 
         pagebar += "</ul>";
 
+        String groupId = dao.getGroupId(group);
+
         session.setAttribute("read", "n");
 
+        req.setAttribute("groupId", groupId);
         req.setAttribute("list", list);
         req.setAttribute("map", map);
         req.setAttribute("totalCount", totalCount);

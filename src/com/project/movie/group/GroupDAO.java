@@ -2,6 +2,7 @@ package com.project.movie.group;
 
 import com.project.movie.DBUtil;
 import com.project.movie.dto.CommentDTO;
+import com.project.movie.dto.GroupRequestDTO;
 import com.project.movie.dto.PostDTO;
 
 import java.sql.Connection;
@@ -220,7 +221,7 @@ public class GroupDAO {
 
                 sql = String.format("select count(*) as count from vwGroupPost gp inner join tblPostGroup pg on gp.seq = pg.pseq where pg.gseq = %s %s", map.get("group"), where);
             } else {
-                sql = sql = String.format("select count(*) as count from vwGroupPost gp inner join tblPostGroup pg on gp.seq = pg.pseq inner join tblPostHash ph on gp.seq = ph.pseq inner join tblHashTag ht on ph.hseq = ht.seq where pg.gseq = %s and ht.hashtag = %s", map.get("group"), map.get("tag"));
+                sql = sql = String.format("select count(*) as count from vwGroupPost gp inner join tblPostGroup pg on gp.seq = pg.pseq inner join tblPostHash ph on gp.seq = ph.pseq inner join tblHashTag ht on ph.hseq = ht.seq where pg.gseq = %s and ht.hashtag = '%s'", map.get("group"), map.get("tag"));
             }
 
             stat = conn.createStatement();
@@ -718,5 +719,118 @@ public class GroupDAO {
     }
 
 
+    public String getGroupId(String group) {
 
+        try {
+
+            String sql = "select id from tblGroup where seq = ?";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, group);
+
+            rs = pstat.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("id");
+            }
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.getGroupId");
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public List<GroupRequestDTO> getRequest(Map<String, String> map) {
+
+        try {
+
+            String sql = "select * from (select a.*, rownum as rnum from (select gr.*, (select nickname from tblUser where id = gr.id) as nickname from tblgrouprequest gr order by seq desc) a) where rnum between ? and ? and gseq = ?";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, map.get("begin"));
+            pstat.setString(2, map.get("end"));
+            pstat.setString(3, map.get("group"));
+            rs = pstat.executeQuery();
+
+            List<GroupRequestDTO> list = new ArrayList<>();
+
+            int i = Integer.parseInt(map.get("begin"));
+            while (rs.next()) {
+                GroupRequestDTO dto = new GroupRequestDTO();
+                dto.setSeq(rs.getString("seq"));
+                dto.setId(rs.getString("id"));
+                dto.setGseq(rs.getString("gseq"));
+                dto.setRegdate(rs.getString("regdate"));
+                dto.setNickname(rs.getString("nickname"));
+                dto.setNum(String.valueOf(i++));
+
+                list.add(dto);
+            }
+            return list;
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.getRequest");
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public int getRequestCount(Map<String, String> map) {
+
+        try {
+
+            String sql = "select count(*) as cnt from tblgrouprequest where gseq = ?";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, map.get("group"));
+            rs = pstat.executeQuery();
+
+            if (rs.next()) {
+                return Integer.parseInt(rs.getString("cnt"));
+            }
+
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.getRequestCount");
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public int deleteRequest(String seq) {
+
+        try {
+
+            String sql = "delete from tblgrouprequest where seq = ?";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+            return pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.deleteRequest");
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public int addRequest(String group, String id) {
+
+        try {
+
+            String sql = "insert into tblUserGroup values (seqUserGroup.nextVal, ?, ?)";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, id);
+            pstat.setString(2, group);
+
+            return pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("GroupDAO.deleteRequest");
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
 }

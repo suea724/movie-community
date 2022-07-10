@@ -15,7 +15,9 @@
           <li><a href="/movie/group/grouplist.do?group=${group}">그룹 게시판</a></li>
           <li><a href="">그룹 정보</a></li>
           <li><a href="">그룹원 목록</a></li>
+          <c:if test="${auth.id == groupId}">
           <li><a href="">신청 목록</a></li>
+          </c:if>
         </ul>
       </div>
 
@@ -81,11 +83,10 @@
           <c:forEach items="${clist}" var="cdto">
             <tr>
               <td style="width: 500px; color: black; background-color: #DDDD;">
+                <div style="display: flex; justify-content: left; font-weight: bold;"><span>${cdto.nickname}</span></div>
                 <div style="display: flex; justify-content: left;">${cdto.content}</div>
                 <div style="display: flex; justify-content: left;">
                   <span>${cdto.regdate}</span>
-                  <span>${cdto.nickname}</span>
-
                 </div>
                 <c:if test="${cdto.id == auth.id}">
                   <div style="display: flex; justify-content: right;">
@@ -204,16 +205,18 @@
           //성공 > 새로 작성된 댓글을 목록에 반영하기
 
           let temp = `<tr>
-										<td>
-											<div>\${$('[name=content]').val()}</div>
-											<div>
-												<span>\${result.regdate}</span>
-												<span>\${result.nickname}</span>
-												<span class="btnspan"><a href="#!" onclick="delcomment(\${result.seq});">[삭제]</a></span>
-												<span class="btnspan"><a href="#!" onclick="editcomment(\${result.seq});">[수정]</a></span>
-											</div>
-										</td>
-									</tr>`;
+              <td style="width: 500px; color: black; background-color: #DDDD;">
+                <div style="display: flex; justify-content: left; font-weight: bold;"><span>\${result.nickname}</span></div>
+                <div style="display: flex; justify-content: left;">\${$('[name=content]').val()}</div>
+                <div style="display: flex; justify-content: left;">
+                  <span>\${result.regdate}</span>
+                </div>
+                  <div style="display: flex; justify-content: right;">
+                    <span class="btnspan"><a href="#!" onclick="delcomment(\${result.seq});">[삭제]</a></span>
+                    <span class="btnspan"><a href="#!" onclick="editcomment(\${result.seq});">[수정]</a></span>
+                  </div>
+              </td>
+            </tr>`;
 
 
           if ($('.comment tbody').length == 0) {
@@ -260,9 +263,11 @@
 
           //수정된 댓글을 화면에 반영하기
           //$('textarea[name=content]').val()
-          $('#editRow').prev().children().eq(0).children().eq(0).text($('#txtcontent').val());
+          $('#editRow').prev().children().eq(0).children().eq(1).text($('#txtcontent').val());
 
           $('#editRow').remove();
+
+          isEdit = false;
 
         } else {
           alert('failed');

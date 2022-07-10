@@ -91,6 +91,9 @@ public class GroupView extends HttpServlet {
 
         List<Integer> glist = dao.getGoodBad(seq);
 
+        String groupId = dao.getGroupId(group);
+
+        req.setAttribute("groupId", groupId);
         req.setAttribute("glist", glist);
         req.setAttribute("dto", dto);
         req.setAttribute("clist", clist);
