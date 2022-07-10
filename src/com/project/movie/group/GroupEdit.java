@@ -93,7 +93,7 @@ public class GroupEdit extends HttpServlet {
 
 
 
-        RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/group/groupedit.jsp");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/group/groupinfoedit.jsp");
         dispatcher.forward(req, resp);
     }
 

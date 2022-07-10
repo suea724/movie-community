@@ -1,6 +1,7 @@
 package com.project.movie.group.mygroup.info;
 
 import com.project.movie.dto.GroupDTO;
+import com.project.movie.dto.HashTagDTO;
 import com.project.movie.group.GroupDAO;
 import com.project.movie.group.mygroup.MyGroupDAO;
 
@@ -28,16 +29,20 @@ public class GroupInfo extends HttpServlet {
 
         //그룹명, 그룹인원, 그룹 설명, 그룹 개설날짜, 그룹장,   >  해시태그
 
-        ArrayList<GroupDTO> list = dao.groupinfo(seq);
+        GroupDTO dto = dao.groupinfo(seq); //그룹정보 > 그룹번호 넘기기
+
+        ArrayList<String> hlist = dao.groupHash(seq); //해당 그룹의 해시태그 > 그룹번호 넘기기
+
+        String groupId = dto.getId();
+
+        dto.setInfo(dto.getInfo().replace("\r\n", "<br>"));
+
+        request.setAttribute("groupId", groupId);
+        request.setAttribute("dto", dto);
+        request.setAttribute("hlist", hlist);
 
 
-
-
-
-
-
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/group/grouprequest.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/group/groupinfo.jsp");
         dispatcher.forward(request, response);
     }
 
