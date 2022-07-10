@@ -50,7 +50,7 @@
                 <div id="submenu">
                     <ul>
                         <li><a href="/movie/group/mygroup/mygrouplist.do">내 그룹</a></li>
-                        <li><a href="#!">모집게시판</a></li>
+                        <li><a href="/movie/recruit/recruitlist.do">모집게시판</a></li>
                     </ul>
                 </div>
                 <div id="board">
