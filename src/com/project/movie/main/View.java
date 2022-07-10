@@ -1,5 +1,6 @@
 package com.project.movie.main;
 
+import com.project.movie.dto.CommentDTO;
 import com.project.movie.dto.MemberDTO;
 import com.project.movie.dto.PostDTO;
 
@@ -51,11 +52,22 @@ public class View extends HttpServlet {
         dto.setTitle(dto.getTitle().replace("<", "&lt;").replace(">", "&gt;"));
         dto.setContent(dto.getContent().replace("<", "&lt;").replace(">", "&gt;"));
 
+        // 댓글 목록 가져오기
+        ArrayList<CommentDTO> clist = dao.listComment(seq);
+
+        //System.out.println(clist);
+
+        for(CommentDTO cdto : clist) {
+            cdto.setContent(cdto.getContent().replace("\r\n", "<br>"));
+        }
+
+
         //- 출력 데이터 조작하기
         dto.setContent(dto.getContent().replace("\r\n", "<br>"));
 
         req.setAttribute("dto", dto);
         req.setAttribute("list", list);
+        req.setAttribute("clist", clist);
 
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/main/view.jsp");
         dispatcher.forward(req, resp);

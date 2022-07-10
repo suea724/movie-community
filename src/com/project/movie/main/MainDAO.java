@@ -1,6 +1,7 @@
 package com.project.movie.main;
 
 import com.project.movie.DBUtil;
+import com.project.movie.dto.CommentDTO;
 import com.project.movie.dto.PostDTO;
 
 import java.sql.Connection;
@@ -294,6 +295,109 @@ public class MainDAO {
             e.printStackTrace();
         }
 
+        return 0;
+    }
+
+    public int addComment(CommentDTO dto) {
+        try {
+            String sql = "insert into tblComment (seq, content, regdate, pseq, id) values (seqComment.nextVal, ?, default, ?, ?)";
+
+            pstat = conn.prepareStatement(sql);
+
+            pstat.setString(1, dto.getContent());
+            pstat.setString(2, dto.getPseq());
+            pstat.setString(3, dto.getId());
+
+            return pstat.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public CommentDTO getComment() {
+        try {
+            //방금 작성한 댓글 찾기
+            String sql = "select tblComment.*, (select nickname from tblUser where id = tblComment.id) as nickname from tblComment where seq = (select max(seq) from tblComment)";
+
+            stat = conn.createStatement();
+            rs = stat.executeQuery(sql);
+
+            CommentDTO dto = new CommentDTO();
+
+            if(rs.next()) {
+                dto.setSeq(rs.getString("seq"));
+                dto.setId(rs.getString("id"));
+                dto.setNickname(rs.getString("nickname"));
+                dto.setRegdate(rs.getString("regdate"));
+                dto.setPseq(rs.getString("pseq"));
+                dto.setContent(rs.getString("content"));
+            }
+            return dto;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ArrayList<CommentDTO> listComment(String seq) {
+        try {
+            String sql = "select tblComment.*, (select nickname from tblUser where id = tblComment.id) as nickname from tblComment where pseq = ? order by seq desc";
+
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+            rs = pstat.executeQuery();
+
+            ArrayList<CommentDTO> clist = new ArrayList<>();
+
+            while(rs.next()) {
+                CommentDTO dto = new CommentDTO();
+
+                dto.setSeq(rs.getString("seq"));
+                dto.setContent(rs.getString("content"));
+                dto.setId(rs.getString("id"));
+                dto.setNickname(rs.getString("nickname"));
+                dto.setRegdate(rs.getString("regdate"));
+
+                clist.add(dto);
+            }
+            //System.out.println(clist);
+            return clist;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int editComment(CommentDTO dto) {
+        try {
+            String sql = "update tblComment set content = ? where seq = ?";
+
+            pstat = conn.prepareStatement(sql);
+
+            pstat.setString(1, dto.getContent());
+            pstat.setString(2, dto.getSeq());
+
+            return pstat.executeUpdate();
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int delCommentAjax(String seq) {
+        try {
+            String sql = "delete from tblComment where seq = ?";
+
+            pstat = conn.prepareStatement(sql);
+
+            pstat.setString(1, seq);
+
+            return pstat.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 }
