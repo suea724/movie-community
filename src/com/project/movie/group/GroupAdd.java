@@ -25,9 +25,12 @@ public class GroupAdd extends HttpServlet {
 
         GroupDAO dao = new GroupDAO();
 
+        String group = req.getParameter("group");
+
         List<String> taglist = dao.taglist();
 
         req.setAttribute("taglist", taglist);
+        req.setAttribute("group", group);
 
 
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/group/groupadd.jsp");
