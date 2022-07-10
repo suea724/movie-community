@@ -13,4 +13,6 @@ public class MemberDTO {
     private String picture;
     private String joindate;
     private int grade;
+    private int postCnt;
+    private int commentCnt;
 }
