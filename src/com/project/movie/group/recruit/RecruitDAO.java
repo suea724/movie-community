@@ -65,8 +65,9 @@ public class RecruitDAO {
             //select r.*, u.nickname from tblRecruit r inner join tblUser u on u.id = r. id " + where + " order by seq des
             //select * from (select r.*, rownum as rnum from tblRecruit r inner join tblUser u on u.id = r.id where  nickname like '%민초%') where rnum between 0 and 10;
 
-            String sql = String.format("select * from (select r.*,  u.nickname, rownum as rnum from tblRecruit r inner join tblUser u on u.id = r.id %s) where rnum between %s and %s order by seq desc", where, map.get("begin"), map.get("end"));
+            String sql = String.format("select * from (select a.*, rownum as rnum from (select r.*, u.nickname from tblRecruit r inner join tblUser u on u.id = r.id %s order by r.seq desc) a) where rnum between %s and %s", where, map.get("begin"), map.get("end"));
 
+            //select * from (select a.*, rownum as rnum from (select r.*, u.nickname from tblRecruit r inner join tblUser u on u.id = r.id %s order by r.seq desc) a) where rnum between %s and %s;
             stat = conn.createStatement();
 
             rs = stat.executeQuery(sql);
