@@ -1,5 +1,8 @@
 package com.project.movie.dto;
 
+import lombok.Data;
+
+@Data
 public class CommentDTO {
 
     private String seq;
@@ -7,4 +10,6 @@ public class CommentDTO {
     private String regdate;
     private String pseq;
     private String id;
+
+    private String nickname;
 }

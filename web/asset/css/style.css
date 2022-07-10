@@ -142,16 +142,16 @@ section {
     margin-top: 80px;
 }
 
-section > div > table tr:nth-child(1) {
+section > div > div > table tr:nth-child(1) {
     background-color: gray;
 }
 
-section > div > table tr th {
+section > div > div > table tr th {
     color: white;
     text-align: center;
 }
 
-section > div > table tr td {
+section > div > div > table tr td {
     color: white;
     text-align: center;
     padding: 10px;
@@ -160,28 +160,24 @@ section > div > table tr td {
 section > div > table tr:first-child th:first-child { border-top-left-radius: 20px; }
 section > div > table tr:first-child th:last-child { border-top-right-radius: 20px; }
 
-section {
-    display: flex;
-}
-
-section > div#submenu {
+section > div > div#submenu {
     background-color: #DDDD;
     width: 150px;
     border-radius: 20px;
 }
 
-section > div#submenu > ul {
+section > div > div#submenu > ul {
     margin-top: 30px;
 }
 
-section > div#submenu > ul > li {
+section > div > div#submenu > ul > li {
     color: black;
     list-style: none;
     padding: 5px;
     font-family: 'GongGothicMedium';
 }
 
-section > div#board{
+section > div > div#board{
     margin-left: 16px;
     background-color: rgba(170, 170, 170, 0.158);
     border-radius: 20px;
@@ -191,6 +187,10 @@ section > div#board{
     background-color: rgb(69, 149 , 140);
 }
 
-section > #board > table tr td:nth-child(2) {
+section > div > #board > table tr td:nth-child(2) {
     text-align: left;
+}
+
+section > #subboard {
+    display: flex;
 }
