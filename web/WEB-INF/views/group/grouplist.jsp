@@ -12,16 +12,7 @@
     <section>
 
         <div id="subboard">
-            <div id="submenu">
-                <ul>
-                    <li><a href="/movie/group/grouplist.do?group=${group}">그룹 게시판</a></li>
-                    <li><a href="/movie/group/mygroup/groupinfo.do${group}">그룹 정보</a></li>
-                    <li><a href="/group/mygroup/groupmember.do${group}">그룹원 목록</a></li>
-                    <c:if test="${auth.id == groupId}">
-                        <li><a href="/movie/group/grouprequest.do?group=${group}">신청 목록</a></li>
-                    </c:if>
-                </ul>
-            </div>
+            <%@ include file="/WEB-INF/inc/groupmenu.jsp"%>
             <div id="board">
                 <table class="table" style="width: 1000px">
                     <tr>
@@ -45,9 +36,9 @@
             </div>
         </div>
         <c:if test="${not empty auth}">
-        <div id="add" style="display: flex; justify-content: right">
-            <input type="button" class="btn btn-danger" value="글 쓰기" onclick="location.href='/movie/group/groupadd.do?group=${group}';" style="margin-top: 20px; margin-right: 30px">
-        </div>
+            <div id="add" style="display: flex; justify-content: right">
+                <input type="button" class="btn btn-danger" value="글 쓰기" onclick="location.href='/movie/group/groupadd.do?group=${group}';" style="margin-top: 20px; margin-right: 30px">
+            </div>
         </c:if>
         <div style="justify-content: center; display: flex">
             ${pagebar}

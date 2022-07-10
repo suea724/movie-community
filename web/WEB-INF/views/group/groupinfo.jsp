@@ -10,14 +10,7 @@
 
   <section>
     <div id="subboard">
-      <div id="submenu">
-        <ul>
-          <li><a href="">전체게시판</a></li>
-          <li><a href="">그룹 정보</a></li>
-          <li><a href="">그룹원 목록</a></li>
-          <li><a href="">신청 목록</a></li>
-        </ul>
-      </div>
+      <%@ include file="/WEB-INF/inc/groupmenu.jsp"%>
       <div id="board">
 
       </div>
