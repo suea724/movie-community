@@ -29,15 +29,22 @@ public class GroupInfoDel extends HttpServlet {
         //해시태그 지우기
         //그룹원 1명이어야 가능
 
-        dao.delHashTag(seq); //해시태그
-        dao.delUserGroup(seq); //
-        dao.delMyGroup(seq);
+        int ghdel = dao.delHashTag(seq); //해시태그
+        int memdel = dao.delUserGroup(seq); //그룹원 삭제
+        int groupdel = dao.delMyGroup(seq); //그룹 삭제
+
+        System.out.println(groupdel);
+
+        //if ((ghdel != -1) && (memdel != -1) && (groupdel == 1)){
+
+        if (groupdel == 1) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/movie/group/mygroup/mygrouplist.do");
+            dispatcher.forward(request, response);
+        } else {
+            response.sendRedirect(String.format("/movie/group/mygroup/groupinfo.do?group=%s", seq));
+        }
 
 
-
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/group/groupadd.jsp");
-        dispatcher.forward(request, response);
     }
 
     @Override

@@ -71,7 +71,7 @@
     <div style="display: flex; justify-content: right">
       <c:if test="${groupId == auth.id}">
       <input type="button" class="btn btn-primary" id="editbtn" value="그룹 수정" onclick="location.href='/movie/group/mygroup/info/groupinfoedit.do?group=${dto.seq}&groupid=${groupId}';" style="margin: 5px 5px 0px 0px">
-      <input type="button" class="btn btn-danger" id="delbtn" value="그룹 삭제" onclick="location.href='/movie/group/mygroup/info/groupinfoedit.do?group=${dto.seq}&groupid=${groupId}';" style="margin: 5px 335px 0px 0px">
+      <input type="button" class="btn btn-danger" id="delbtn" value="그룹 삭제" onclick="location.href='/movie/group/mygroup/info/groupinfodel.do?group=${dto.seq}&groupid=${groupId}';" style="margin: 5px 335px 0px 0px">
       </c:if>
       <c:if test="${groupId != auth.id}">
         <input type="button" class="btn btn-danger" id="delbtn" value="그룹 탈퇴" onclick="location.href='그룹탈퇴';" style="margin: 5px 335px 0px 0px">
