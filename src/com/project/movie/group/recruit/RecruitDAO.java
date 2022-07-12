@@ -194,7 +194,7 @@ public class RecruitDAO {
 
             //***
             rs.close();
-            stat.close();
+            pstat.close();
             conn.close();
 
 
