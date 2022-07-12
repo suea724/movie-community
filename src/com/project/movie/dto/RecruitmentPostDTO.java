@@ -14,5 +14,6 @@ public class RecruitmentPostDTO {
     private String gseq;
 
     private String nickname;
+    //private String commentcount;
 
 }
