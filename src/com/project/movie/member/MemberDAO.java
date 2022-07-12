@@ -41,9 +41,13 @@ public class MemberDAO {
 
                 return mdto;
             }
+            pstmt.close();
+            rs.close();
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return null;
     }
@@ -59,8 +63,13 @@ public class MemberDAO {
                 return Integer.parseInt(rs.getString("cnt"));
             }
 
+            pstmt.close();
+            rs.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
@@ -76,8 +85,13 @@ public class MemberDAO {
                 return Integer.parseInt(rs.getString("cnt"));
             }
 
+            pstmt.close();
+            rs.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
@@ -93,8 +107,13 @@ public class MemberDAO {
                 return Integer.parseInt(rs.getString("cnt"));
             }
 
+            pstmt.close();
+            rs.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
@@ -110,8 +129,13 @@ public class MemberDAO {
                 return Integer.parseInt(rs.getString("cnt"));
             }
 
+            pstmt.close();
+            rs.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
@@ -128,8 +152,13 @@ public class MemberDAO {
                 return rs.getString("id");
             }
 
+            pstmt.close();
+            rs.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return null;
     }
@@ -147,8 +176,14 @@ public class MemberDAO {
                 return Integer.parseInt(rs.getString("cnt"));
             }
 
+            pstmt.close();
+            rs.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
@@ -160,10 +195,15 @@ public class MemberDAO {
             pstmt.setString(1, pw);
             pstmt.setString(2, id);
 
+            pstmt.close();
+            rs.close();
+
             return pstmt.executeUpdate();
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
@@ -184,10 +224,16 @@ public class MemberDAO {
 
                 list.add(dto);
             }
+
+            stmt.close();
+            rs.close();
+
             return list;
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
 
         return null;
@@ -198,10 +244,16 @@ public class MemberDAO {
             String sql = "update tblUser set name = 'not used', nickname = 'not used', password = 'not used', tel = 'not used', picture = 'not used', joindate = sysdate where id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, id);
+
+            pstmt.close();
+            rs.close();
+
             return pstmt.executeUpdate();
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
@@ -235,10 +287,15 @@ public class MemberDAO {
                 pstmt.setString(5, dto.getTel());
             }
 
+            pstmt.close();
+            rs.close();
+
             return pstmt.executeUpdate();
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
@@ -254,8 +311,13 @@ public class MemberDAO {
                 pstmt.executeUpdate();
             }
 
+            pstmt.close();
+            rs.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
     }
 
@@ -274,10 +336,16 @@ public class MemberDAO {
                     seqList.add(rs.getString("seq"));
                 }
             }
+
+            pstmt.close();
+            rs.close();
+
             return seqList;
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return null;
     }
@@ -294,10 +362,16 @@ public class MemberDAO {
             while (rs.next()) {
                 tagList.add(rs.getString("hashtag"));
             }
+
+            pstmt.close();
+            rs.close();
+
             return tagList;
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return null;
 
@@ -310,10 +384,15 @@ public class MemberDAO {
             pstmt.setString(1, nickname);
             pstmt.setString(2, id);
 
+            pstmt.close();
+            rs.close();
+
             return pstmt.executeUpdate();
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
@@ -325,10 +404,15 @@ public class MemberDAO {
             pstmt.setString(1, tel);
             pstmt.setString(2, id);
 
+            pstmt.close();
+            rs.close();
+
             return pstmt.executeUpdate();
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
@@ -362,10 +446,16 @@ public class MemberDAO {
 
                 list.add(dto);
             }
+
+            pstmt.close();
+            rs.close();
+
             return list;
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return null;
 
@@ -382,8 +472,13 @@ public class MemberDAO {
                 return Integer.parseInt(rs.getString("cnt"));
             }
 
+            pstmt.close();
+            rs.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
@@ -416,10 +511,15 @@ public class MemberDAO {
 
                 list.add(dto);
             }
+            pstmt.close();
+            rs.close();
+
             return list;
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
 
         return null;
@@ -435,9 +535,13 @@ public class MemberDAO {
             if (rs.next()) {
                 return Integer.parseInt(rs.getString("cnt"));
             }
+            pstmt.close();
+            rs.close();
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
