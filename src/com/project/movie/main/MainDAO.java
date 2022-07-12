@@ -24,6 +24,7 @@ public class MainDAO {
 
         try {
 
+            conn = DBUtil.open();
             String sql = "select hashtag from tblHashTag order by hashtag asc";
 
             stat = conn.createStatement();
@@ -34,6 +35,10 @@ public class MainDAO {
             while (rs.next()) {
                 list.add(rs.getString("hashtag"));
             }
+
+            rs.close();
+            stat.close();
+            conn.close();
 
             return list;
 
@@ -48,6 +53,7 @@ public class MainDAO {
 
     public int add(PostDTO dto) {
         try{
+            conn = DBUtil.open();
             String sql = "insert into tblPost (seq, title, content, regdate, readcount, good, bad, type, id) " +
                     "values (seqPost.nextVal, ?, ?, default, default, default, default, ?, ?)";
 
@@ -67,10 +73,13 @@ public class MainDAO {
 
     public int getMaxSeq() {
         try{
+            conn = DBUtil.open();
             String sql = "select max(seq) as maxseq from tblPost";
 
             stat = conn.createStatement();
             rs = stat.executeQuery(sql);
+
+
 
             if(rs.next()) {
                 return rs.getInt("maxseq");
@@ -84,12 +93,15 @@ public class MainDAO {
 
     public String getHashTagSeq(String tag) {
         try {
+            conn = DBUtil.open();
             String sql = "select seq from tblHashTag where hashtag = ?";
 
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, tag);
 
+
             rs = pstat.executeQuery();
+
 
             if(rs.next()) {
                 return rs.getString("seq");
@@ -106,12 +118,16 @@ public class MainDAO {
 
     public void addHashTag(String hseq, int maxSeq) {
         try {
+            conn = DBUtil.open();
             String sql = "insert into tblPostHash (seq, pseq, hseq) values (seqPostHash.nextVal, ?, ?)";
 
             pstat = conn.prepareStatement(sql);
             pstat.setInt(1, maxSeq);
             pstat.setString(2, hseq);
             pstat.executeUpdate();
+
+            pstat.close();
+            conn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -119,6 +135,7 @@ public class MainDAO {
 
     public ArrayList<PostDTO> list(HashMap<String, String> map) {
         try {
+            conn = DBUtil.open();
             String where = "";
             String sql = "";
 
@@ -168,6 +185,10 @@ public class MainDAO {
 
                 list.add(dto);
             }
+
+            rs.close();
+            stat.close();
+            conn.close();
             return list;
         } catch (Exception e) {
             e.printStackTrace();
@@ -177,6 +198,7 @@ public class MainDAO {
 
     public int getTotalCount(HashMap<String, String> map) {
         try{
+            conn = DBUtil.open();
             String where = "";
 
             if(map.get("isSearch").equals("y")) {
@@ -189,6 +211,7 @@ public class MainDAO {
 
             rs = stat.executeQuery(sql);
 
+
             if(rs.next()) {
                 return rs.getInt("cnt");
             }
@@ -200,6 +223,7 @@ public class MainDAO {
 
     public PostDTO getView(PostDTO tempdto) {
         try {
+            conn = DBUtil.open();
             String sql = "select tblPost.*, (select nickname from tblUser where id = tblPost.id) as nickname from tblPost where seq = ?";
 
             pstat = conn.prepareStatement(sql);
@@ -218,6 +242,9 @@ public class MainDAO {
                 dto.setRegdate(rs.getString("regdate"));
                 dto.setReadcount(rs.getString("readcount"));
             }
+            rs.close();
+            pstat.close();
+            conn.close();
             return dto;
 
         } catch (Exception e) {
@@ -228,11 +255,15 @@ public class MainDAO {
 
     public void updateReadcount(String seq) {
         try {
+            conn = DBUtil.open();
             String sql = "update tblPost set readcount = readcount + 1 where seq = ?";
 
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, seq);
             pstat.executeUpdate();
+
+            pstat.close();
+            conn.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -241,6 +272,7 @@ public class MainDAO {
 
     public ArrayList<String> getHashTag(String seq) {
         try {
+            conn = DBUtil.open();
             String sql = "select hashtag from tblHashTag where seq = (select hseq from tblPostHash where pseq = ?)";
 
             pstat = conn.prepareStatement(sql);
@@ -254,6 +286,9 @@ public class MainDAO {
                 list.add(rs.getString("hashtag"));
             }
 
+            rs.close();
+            pstat.close();
+            conn.close();
             return list;
         } catch (Exception e) {
             e.printStackTrace();
@@ -263,11 +298,15 @@ public class MainDAO {
 
     public void delHashTag(String seq) {
         try {
+            conn = DBUtil.open();
             String sql = "delete from tblPostHash where pseq = ?";
 
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, seq);
             pstat.executeUpdate();
+
+            pstat.close();
+            conn.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -276,11 +315,15 @@ public class MainDAO {
 
     public void delComment(String seq) {
         try{
+            conn = DBUtil.open();
             String sql = "delete from tblComment where pseq = ?";
 
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, seq);
             pstat.executeUpdate();
+
+            pstat.close();
+            conn.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -289,10 +332,12 @@ public class MainDAO {
 
     public int delContent(String seq) {
         try {
+            conn = DBUtil.open();
             String sql = "delete from tblPost where seq = ?";
 
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, seq);
+
             return pstat.executeUpdate();
 
         } catch (Exception e) {
@@ -303,6 +348,7 @@ public class MainDAO {
 
     public int updatePost(PostDTO dto) {
         try {
+            conn = DBUtil.open();
             String sql = "update tblPost set title = ?, content = ?, type = ? where seq = ?";
 
             pstat = conn.prepareStatement(sql);
@@ -321,6 +367,7 @@ public class MainDAO {
 
     public int addComment(CommentDTO dto) {
         try {
+            conn = DBUtil.open();
             String sql = "insert into tblComment (seq, content, regdate, pseq, id) values (seqComment.nextVal, ?, default, ?, ?)";
 
             pstat = conn.prepareStatement(sql);
@@ -338,6 +385,7 @@ public class MainDAO {
 
     public CommentDTO getComment() {
         try {
+            conn = DBUtil.open();
             //방금 작성한 댓글 찾기
             String sql = "select tblComment.*, (select nickname from tblUser where id = tblComment.id) as nickname from tblComment where seq = (select max(seq) from tblComment)";
 
@@ -354,6 +402,10 @@ public class MainDAO {
                 dto.setPseq(rs.getString("pseq"));
                 dto.setContent(rs.getString("content"));
             }
+
+            rs.close();
+            stat.close();
+            conn.close();
             return dto;
         } catch (Exception e) {
             e.printStackTrace();
@@ -363,6 +415,7 @@ public class MainDAO {
 
     public ArrayList<CommentDTO> listComment(String seq) {
         try {
+            conn = DBUtil.open();
             String sql = "select tblComment.*, (select nickname from tblUser where id = tblComment.id) as nickname from tblComment where pseq = ? order by seq desc";
 
             pstat = conn.prepareStatement(sql);
@@ -382,6 +435,9 @@ public class MainDAO {
 
                 clist.add(dto);
             }
+            rs.close();
+            pstat.close();
+            conn.close();
             //System.out.println(clist);
             return clist;
         } catch (Exception e) {
@@ -392,6 +448,7 @@ public class MainDAO {
 
     public int editComment(CommentDTO dto) {
         try {
+            conn = DBUtil.open();
             String sql = "update tblComment set content = ? where seq = ?";
 
             pstat = conn.prepareStatement(sql);
@@ -409,6 +466,7 @@ public class MainDAO {
 
     public int delCommentAjax(String seq) {
         try {
+            conn = DBUtil.open();
             String sql = "delete from tblComment where seq = ?";
 
             pstat = conn.prepareStatement(sql);

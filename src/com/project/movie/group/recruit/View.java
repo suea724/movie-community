@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet("/recruit/view.do")
 public class View extends HttpServlet {
@@ -43,7 +44,19 @@ public class View extends HttpServlet {
         dto.setContent(dto.getContent().replace("\r\n", "<br>"));
 
 
+        //댓글
+        List<RecruitCommentDTO> rlist = dao.getComment(seq);
+
+        //System.out.println("View.java의 rlist: " + rlist);
+
+        for (RecruitCommentDTO rd : rlist) {
+            rd.setContent(rd.getContent().replace("\r\n", "<br>"));
+        }
+
+
+
         req.setAttribute("dto", dto);
+        req.setAttribute("rlist", rlist);
 
 
 
