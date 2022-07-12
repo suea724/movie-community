@@ -38,7 +38,7 @@
 
                         <tr class="table-hover">
                             <td>${dto.seq}</td>
-                            <td><a href="/movie/recruit/view.do?seq=${dto.seq}" style="color:white;"> ${dto.title}</a> </td>
+                            <td><a href="/movie/recruit/view.do?seq=${dto.seq}" style="color:white;"> ${dto.title}</a></td>
                             <td>${dto.nickname}</td>
                             <td>${dto.regdate}</td>
                             <td>${dto.readcount}</td>
@@ -113,7 +113,7 @@
 
     $("#pagebar").change(function() {
 
-        location.href = '/toy/board/list.do?page=' + $(this).val() + "&column=${map.column}&word=${map.word}";
+        location.href = '/recruit/recruitlist.do?page=' + $(this).val() + "&column=${map.column}&word=${map.word}";
 
     });
 
