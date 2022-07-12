@@ -120,7 +120,7 @@
                                 <c:if test="${rdto.id == auth.id}">
                                     <div style="display: flex; justify-content: right;">
                                         <span class="btnspan"><a href="#!" onclick="delComment(${rdto.seq});">[삭제]</a></span>
-                                        <span class="btnspan"><a href="#!" onclick="editComment(${rdto.seq});">[수정]</a></span>
+                                        <span class="btnspan"><a href="#!" onclick="editcomment(${rdto.seq});">[수정]</a></span>
                                     </div>
                                 </c:if>
                             </td>
@@ -143,7 +143,7 @@
 
 
     let isEdit = false;
-    function editComment(seq) {
+    function editcomment(seq) {
         if (!isEdit) {
             const tempStr = $(event.target).parent().parent().prev().prev().text();
             $(event.target).parents('tr').after(temp);
