@@ -26,6 +26,7 @@ public class GroupDAO {
 
     public List<String> taglist() {
         try {
+            conn = DBUtil.open();
 
             String sql = "select hashtag from tblHashTag";
 
@@ -37,6 +38,10 @@ public class GroupDAO {
             while (rs.next()) {
                 list.add(rs.getString("hashtag"));
             }
+
+            rs.close();
+            stat.close();
+            conn.close();
 
             return list;
 
@@ -52,6 +57,7 @@ public class GroupDAO {
     public int add(PostDTO dto) {
 
         try {
+            conn = DBUtil.open();
             String sql = "insert into tblpost values (seqPost.nextVal, ?, ?, default, default, default, default, 3, ?)";
 
             pstat = conn.prepareStatement(sql);
@@ -60,7 +66,12 @@ public class GroupDAO {
             pstat.setString(2, dto.getContent());
             pstat.setString(3, dto.getId());
 
-            return pstat.executeUpdate();
+            int result = pstat.executeUpdate();
+
+            pstat.close();
+            conn.close();
+
+            return result;
 
         } catch (Exception e) {
             System.out.println("GroupDAO.add");
@@ -76,6 +87,7 @@ public class GroupDAO {
     public int addPostGroup(String maxSeq, String group) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "insert into tblpostgroup values (seqpostgroup.nextVal, ?, ?)";
 
@@ -84,7 +96,12 @@ public class GroupDAO {
             pstat.setString(1, maxSeq);
             pstat.setString(2, group);
 
-            return pstat.executeUpdate();
+            int result = pstat.executeUpdate();
+
+            pstat.close();
+            conn.close();
+
+            return result;
 
         } catch (Exception e) {
             System.out.println("GroupDAO.addPostGroup");
@@ -97,6 +114,7 @@ public class GroupDAO {
     public String maxSeq() {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "select max(seq) as seq from tblPost";
 
@@ -105,7 +123,11 @@ public class GroupDAO {
             rs = stat.executeQuery(sql);
 
             if (rs.next()) {
-                return rs.getString("seq");
+                String result = rs.getString("seq");
+                rs.close();
+                stat.close();
+                conn.close();
+                return result;
             }
 
 
@@ -121,6 +143,7 @@ public class GroupDAO {
     public String getHashTagSeq(String tag) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "select seq from tblHashTag where hashtag = ?";
 
@@ -130,7 +153,11 @@ public class GroupDAO {
             rs = pstat.executeQuery();
 
             if (rs.next()) {
-                return rs.getString("seq");
+                String result = rs.getString("seq");
+                rs.close();
+                pstat.close();
+                conn.close();
+                return result;
             }
 
         } catch (Exception e) {
@@ -144,6 +171,7 @@ public class GroupDAO {
     public void addTagging(String maxSeq, String hseq) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "insert into tblposthash values(seqposthash.nextVal, ?, ?)";
 
@@ -152,6 +180,9 @@ public class GroupDAO {
             pstat.setString(2, hseq);
 
             pstat.executeUpdate();
+
+            pstat.close();
+            conn.close();
 
         } catch (Exception e) {
             System.out.println("GroupDAO.addTagging");
@@ -163,6 +194,7 @@ public class GroupDAO {
     public List<PostDTO> groupList(Map<String, String> map) {
 
         try {
+            conn = DBUtil.open();
 
             String where = "";
             String sql = "";
@@ -196,6 +228,9 @@ public class GroupDAO {
 
                 list.add(dto);
             }
+            rs.close();
+            stat.close();
+            conn.close();
 
             return list;
 
@@ -210,6 +245,7 @@ public class GroupDAO {
     public int getTotalCount(Map<String, String> map) {
 
         try {
+            conn = DBUtil.open();
 
             String where = "";
             String sql = "";
@@ -229,7 +265,11 @@ public class GroupDAO {
             rs = stat.executeQuery(sql);
 
             if (rs.next()) {
-                return Integer.parseInt(rs.getString("count"));
+                int result = Integer.parseInt(rs.getString("count"));
+                rs.close();
+                stat.close();
+                conn.close();
+                return result;
             }
 
         } catch (Exception e) {
@@ -243,6 +283,7 @@ public class GroupDAO {
     public int idCheck(String group, String id) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "select count(*) as cnt from tblusergroup where id = ? and gseq = ?";
 
@@ -253,7 +294,11 @@ public class GroupDAO {
             rs = pstat.executeQuery();
 
             if (rs.next()) {
-                return Integer.parseInt(rs.getString("cnt"));
+                int result = Integer.parseInt(rs.getString("cnt"));
+                rs.close();
+                pstat.close();
+                conn.close();
+                return result;
             }
 
 
@@ -269,6 +314,7 @@ public class GroupDAO {
     public PostDTO GroupView(String seq) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "select p.*, (select nickname from tblUser where id = p.id) as nickname from tblPost p where p.seq = ?";
 
@@ -290,6 +336,10 @@ public class GroupDAO {
                 dto.setBad(rs.getString("bad"));
                 dto.setSeq(rs.getString("seq"));
 
+                rs.close();
+                pstat.close();
+                conn.close();
+
                 return dto;
             }
 
@@ -304,6 +354,7 @@ public class GroupDAO {
     public void updateReadcount(String seq) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "update tblPost set readcount = readcount + 1 where seq = ?";
 
@@ -311,6 +362,9 @@ public class GroupDAO {
             pstat.setString(1, seq);
 
             pstat.executeUpdate();
+
+            pstat.close();
+            conn.close();
 
         } catch (Exception e) {
             System.out.println("GroupDAO.updateReadcount");
@@ -322,6 +376,7 @@ public class GroupDAO {
     public List<String> GroupViewTag(String seq) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "select ph.*, (select hashtag from tblHashTag where seq = ph.hseq) as tag from tblposthash ph where ph.pseq = ?";
 
@@ -335,6 +390,10 @@ public class GroupDAO {
             while (rs.next()) {
                 list.add(rs.getString("tag"));
             }
+
+            rs.close();
+            pstat.close();
+            conn.close();
 
             return list;
 
@@ -351,6 +410,7 @@ public class GroupDAO {
     public int editCheck(String seq, String id) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "select count(*) as cnt from tblPost where id = ? and seq = ?";
 
@@ -361,7 +421,11 @@ public class GroupDAO {
             rs = pstat.executeQuery();
 
             if (rs.next()) {
-                return Integer.parseInt(rs.getString("cnt"));
+                int result = Integer.parseInt(rs.getString("cnt"));
+                rs.close();
+                pstat.close();
+                conn.close();
+                return result;
             }
 
 
@@ -376,6 +440,7 @@ public class GroupDAO {
     public int groupEdit(PostDTO dto) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "update tblPost set title = ?, content = ? where seq = ?";
 
@@ -384,7 +449,11 @@ public class GroupDAO {
             pstat.setString(2, dto.getContent());
             pstat.setString(3, dto.getSeq());
 
-            return pstat.executeUpdate();
+            int result = pstat.executeUpdate();
+            pstat.close();
+            conn.close();
+
+            return result;
 
         } catch (Exception e) {
             System.out.println("GroupDAO.groupEdit");
@@ -397,13 +466,18 @@ public class GroupDAO {
     public int deleteHashTag(String seq) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "delete from tblPostHash where pseq = ?";
 
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, seq);
 
-            return pstat.executeUpdate();
+            int result = pstat.executeUpdate();
+            pstat.close();
+            conn.close();
+
+            return result;
 
         } catch (Exception e) {
             System.out.println("GroupDAO.deleteHashTag");
@@ -416,6 +490,7 @@ public class GroupDAO {
     public String getId(String seq) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "select * from tblPost where seq = ?";
             pstat = conn.prepareStatement(sql);
@@ -424,7 +499,11 @@ public class GroupDAO {
             rs = pstat.executeQuery();
 
             if (rs.next()) {
-                return rs.getString("id");
+                String result = rs.getString("id");
+                rs.close();
+                pstat.close();
+                conn.close();
+                return result;
             }
 
 
@@ -440,12 +519,18 @@ public class GroupDAO {
     public int groupDelete(String seq) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "delete from tblPost where seq = ?";
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, seq);
 
-            return pstat.executeUpdate();
+            int result = pstat.executeUpdate();
+
+            pstat.close();
+            conn.close();
+
+            return result;
 
         } catch (Exception e) {
             System.out.println("GroupDAO.groupDelete");
@@ -458,12 +543,16 @@ public class GroupDAO {
     public void groupDelete1(String seq) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "delete from tblPostGroup where pseq = ?";
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, seq);
 
             pstat.executeUpdate();
+
+            pstat.close();
+            conn.close();
 
         } catch (Exception e) {
             System.out.println("GroupDAO.groupDelete1");
@@ -475,12 +564,16 @@ public class GroupDAO {
     public void groupDelete2(String seq) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "delete from tblPostHash where pseq = ?";
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, seq);
 
             pstat.executeUpdate();
+
+            pstat.close();
+            conn.close();
 
         } catch (Exception e) {
             System.out.println("GroupDAO.groupDelete2");
@@ -491,12 +584,16 @@ public class GroupDAO {
     public void groupDelete3(String seq) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "delete from tblComment where pseq = ?";
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, seq);
 
             pstat.executeUpdate();
+
+            pstat.close();
+            conn.close();
 
         } catch (Exception e) {
             System.out.println("GroupDAO.groupDelete3");
@@ -507,12 +604,16 @@ public class GroupDAO {
     public void groupDelete4(String seq) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "delete from tblGoodbad where pseq = ?";
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, seq);
 
             pstat.executeUpdate();
+
+            pstat.close();
+            conn.close();
 
         } catch (Exception e) {
             System.out.println("GroupDAO.groupDelete4");
@@ -523,6 +624,7 @@ public class GroupDAO {
     public List<CommentDTO> getComment(String seq) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "select c.*, (select nickname from tblUser where id = c.id) as nickname from tblComment c where pseq = ? order by seq desc";
             pstat = conn.prepareStatement(sql);
@@ -542,6 +644,9 @@ public class GroupDAO {
 
                 clist.add(dto);
             }
+            rs.close();
+            pstat.close();
+            conn.close();
             return clist;
 
         } catch (Exception e) {
@@ -555,6 +660,7 @@ public class GroupDAO {
     public int groupAddComment(Map<String, String> map) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "insert into tblComment values (seqComment.nextVal, ?, default, ?, ?)";
             pstat = conn.prepareStatement(sql);
@@ -562,7 +668,11 @@ public class GroupDAO {
             pstat.setString(2, map.get("pseq"));
             pstat.setString(3, map.get("id"));
 
-            return pstat.executeUpdate();
+            int result = pstat.executeUpdate();
+            pstat.close();
+            conn.close();
+
+            return result;
 
         } catch (Exception e) {
             System.out.println("GroupDAO.groupAddComment");
@@ -575,6 +685,7 @@ public class GroupDAO {
     public CommentDTO groupGetComment() {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "select c.*, (select nickname from tblUser where id = c.id) as nickname from tblComment c where seq = (select max(seq) from tblComment)";
 
@@ -592,6 +703,10 @@ public class GroupDAO {
                 dto.setNickname(rs.getString("nickname"));
                 dto.setId(rs.getString("id"));
 
+                rs.close();
+                stat.close();
+                conn.close();
+
                 return dto;
             }
         } catch (Exception e) {
@@ -606,13 +721,18 @@ public class GroupDAO {
     public int groupEditComment(String seq, String content) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "update tblComment set content = ? where seq = ?";
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, content);
             pstat.setString(2, seq);
 
-            return pstat.executeUpdate();
+            int result = pstat.executeUpdate();
+            pstat.close();
+            conn.close();
+
+            return result;
 
         } catch (Exception e) {
             System.out.println("GroupDAO.groupEditComment");
@@ -625,12 +745,17 @@ public class GroupDAO {
     public int groupDelComment(String seq) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "delete from tblComment where seq = ?";
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, seq);
 
-            return pstat.executeUpdate();
+            int result = pstat.executeUpdate();
+            pstat.close();
+            conn.close();
+
+            return result;
 
         } catch (Exception e) {
             System.out.println("GroupDAO.groupDelComment");
@@ -642,6 +767,7 @@ public class GroupDAO {
 
     public void deleteGoodBad(String seq, String id) {
         try {
+            conn = DBUtil.open();
 
             String sql = "delete from tblGoodBad where id = ? and pseq = ?";
             pstat = conn.prepareStatement(sql);
@@ -649,6 +775,9 @@ public class GroupDAO {
             pstat.setString(2, seq);
 
             pstat.executeUpdate();
+
+            pstat.close();
+            conn.close();
 
         } catch (Exception e) {
             System.out.println("GroupDAO.deleteGoodBad");
@@ -659,13 +788,18 @@ public class GroupDAO {
     public int goodCount(String seq, String id) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "insert into tblGoodBad values(seqGoodBad.nextVal, ?, ?, 1, 0)";
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, id);
             pstat.setString(2, seq);
 
-            return pstat.executeUpdate();
+            int result = pstat.executeUpdate();
+            pstat.close();
+            conn.close();
+
+            return result;
 
         } catch (Exception e) {
             System.out.println("GroupDAO.goodCount");
@@ -677,13 +811,18 @@ public class GroupDAO {
 
     public int badCount(String seq, String id) {
         try {
+            conn = DBUtil.open();
 
             String sql = "insert into tblGoodBad values(seqGoodBad.nextVal, ?, ?, 0, 1)";
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, id);
             pstat.setString(2, seq);
 
-            return pstat.executeUpdate();
+            int result = pstat.executeUpdate();
+            pstat.close();
+            conn.close();
+
+            return result;
 
         } catch (Exception e) {
             System.out.println("GroupDAO.badCount");
@@ -696,6 +835,7 @@ public class GroupDAO {
     public List<Integer> getGoodBad(String seq) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "select (select count(*) as good from tblGoodBad where pseq = ? and good = 1) as good, (select count(*) as good from tblGoodBad where pseq = ? and bad = 1) as bad from dual";
             pstat = conn.prepareStatement(sql);
@@ -708,6 +848,10 @@ public class GroupDAO {
                 list.add(Integer.parseInt(rs.getString("good")));
                 list.add(Integer.parseInt(rs.getString("bad")));
             }
+
+            rs.close();
+            pstat.close();
+            conn.close();
             return list;
 
         } catch (Exception e) {
@@ -722,6 +866,7 @@ public class GroupDAO {
     public String getGroupId(String group) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "select id from tblGroup where seq = ?";
             pstat = conn.prepareStatement(sql);
@@ -730,7 +875,11 @@ public class GroupDAO {
             rs = pstat.executeQuery();
 
             if (rs.next()) {
-                return rs.getString("id");
+                String result = rs.getString("id");
+                rs.close();
+                pstat.close();
+                conn.close();
+                return result;
             }
 
         } catch (Exception e) {
@@ -744,6 +893,7 @@ public class GroupDAO {
     public List<GroupRequestDTO> getRequest(Map<String, String> map) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "select * from (select a.*, rownum as rnum from (select gr.*, (select nickname from tblUser where id = gr.id) as nickname from tblgrouprequest gr order by seq desc) a) where rnum between ? and ? and gseq = ?";
             pstat = conn.prepareStatement(sql);
@@ -766,6 +916,10 @@ public class GroupDAO {
 
                 list.add(dto);
             }
+
+            rs.close();
+            pstat.close();
+            conn.close();
             return list;
 
         } catch (Exception e) {
@@ -779,6 +933,7 @@ public class GroupDAO {
     public int getRequestCount(Map<String, String> map) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "select count(*) as cnt from tblgrouprequest where gseq = ?";
             pstat = conn.prepareStatement(sql);
@@ -786,7 +941,11 @@ public class GroupDAO {
             rs = pstat.executeQuery();
 
             if (rs.next()) {
-                return Integer.parseInt(rs.getString("cnt"));
+                int result = Integer.parseInt(rs.getString("cnt"));
+                rs.close();
+                pstat.close();
+                conn.close();
+                return result;
             }
 
 
@@ -801,11 +960,16 @@ public class GroupDAO {
     public int deleteRequest(String seq) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "delete from tblgrouprequest where seq = ?";
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, seq);
-            return pstat.executeUpdate();
+
+            int result = pstat.executeUpdate();
+            pstat.close();
+            conn.close();
+            return result;
 
         } catch (Exception e) {
             System.out.println("GroupDAO.deleteRequest");
@@ -818,13 +982,18 @@ public class GroupDAO {
     public int addRequest(String group, String id) {
 
         try {
+            conn = DBUtil.open();
 
             String sql = "insert into tblUserGroup values (seqUserGroup.nextVal, ?, ?)";
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, id);
             pstat.setString(2, group);
 
-            return pstat.executeUpdate();
+            int result = pstat.executeUpdate();
+            pstat.close();
+            conn.close();
+
+            return result;
 
         } catch (Exception e) {
             System.out.println("GroupDAO.deleteRequest");
