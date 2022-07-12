@@ -4,7 +4,7 @@ import com.project.movie.DBUtil;
 import com.project.movie.dto.GroupDTO;
 import com.project.movie.dto.HashTagDTO;
 
-import javax.swing.*;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,6 +27,7 @@ public class MyGroupDAO {
     public String checkGroupName(String gname) {
 
         try {
+            conn = DBUtil.open();
 
             GroupDTO dto = new GroupDTO();
 
@@ -40,9 +41,20 @@ public class MyGroupDAO {
 
                 if (!rs.getString("cnt").equals("0")) {
                     System.out.println("0");
+
+                    rs.close();
+                    stat.close();
+                    conn.close();
+
                     return "0";
                 } else {
+
                     System.out.println("1");
+
+                    rs.close();
+                    stat.close();
+                    conn.close();
+
                     return "1";
                 }
             }
@@ -60,6 +72,9 @@ public class MyGroupDAO {
     public String getHashTagSeq(String tag) {
 
         try {
+
+            conn = DBUtil.open();
+
             //여기 셀렉트 기존꺼?
             String sql = "select seq  from tblHashTag where hashtag = ?";
 
@@ -68,6 +83,7 @@ public class MyGroupDAO {
             rs = pstat.executeQuery();
 
             if (rs.next()) {
+
                 return rs.getString("seq");
             }
 
@@ -83,6 +99,8 @@ public class MyGroupDAO {
     //CreateGroup  > 그룹번호 알아오기
     public String getSeq() {
         try {
+
+            conn = DBUtil.open();
 
             String sql = "select max(seq) as seq from tblGroup";
 
@@ -110,6 +128,8 @@ public class MyGroupDAO {
 
         try {
 
+            conn = DBUtil.open();
+
             String sql = "select hashtag from tblHashTag order by hashtag asc";
 
             stat = conn.createStatement();
@@ -121,6 +141,10 @@ public class MyGroupDAO {
             while (rs.next()) {
                 list.add(rs.getString("hashtag"));
             }
+
+            rs.close();
+            stat.close();
+            conn.close();
 
             return list;
 
@@ -136,6 +160,8 @@ public class MyGroupDAO {
     public int addTagging(HashMap<String, String> map) {
 
         try {
+
+            conn = DBUtil.open();
 
             String sql = "insert into tblGroupHash (seq, gseq, hseq) values (seqGroupHash.nextVal, ?, ?)";
 
@@ -158,6 +184,8 @@ public class MyGroupDAO {
     public int add(GroupDTO gdto) {
 
         try {
+
+            conn = DBUtil.open();
 
             String sql = "insert into tblGroup (seq, name, info, recruitment, regdate, id) values (seqGroup.nextVal, ?, ?, ?, default, ?)";
 
@@ -185,6 +213,7 @@ public class MyGroupDAO {
 
         try {
 
+            conn = DBUtil.open();
 
             String sql = "select g.*, (select count(*) from tblGroup where id = g.id and seq = g.gseq) as checkGroup, (select name from tblGroup where seq = g.gseq) as groupname, (select nickname from tblUser where id = g.id) as nickname, (select (select nickname from tblUser where a.id = id) from (select id from tblGroup where seq = g.gseq) a) as groupking from tblUserGroup g where id = ?";
 
@@ -215,6 +244,10 @@ public class MyGroupDAO {
 
             }
 
+            rs.close();
+            pstat.close();
+            conn.close();
+
             return list;
 
         } catch (Exception e) {
@@ -231,6 +264,8 @@ public class MyGroupDAO {
     public int getTotalCount(HashMap<String, String> map) {
 
         try {
+
+            conn = DBUtil.open();
 
             String where = "";
 
@@ -264,6 +299,8 @@ public class MyGroupDAO {
 
         try {
 
+            DBUtil.open();
+
             String sql = "insert into TBLUSERGROUP (seq, id, GSEQ) values (seqUSERGROUP.nextVal, ?, ?)";
 
 
@@ -289,6 +326,7 @@ public class MyGroupDAO {
 
         try {
 
+            conn = DBUtil.open();
 
             String sql = "select gr.*, (select name from tblGroup where seq = gr.gseq) as groupname, (select nickname from tblUser where id = gr.id) as nickname, 2 as checkGroup, (select (select nickname from tblUser where a.id = id) from (select id from tblGroup where seq = gr.gseq) a) as groupking from tblgrouprequest gr where id = ?";
 
@@ -320,6 +358,10 @@ public class MyGroupDAO {
 
             }
 
+            rs.close();
+            pstat.close();
+            conn.close();
+
             return list;
 
         } catch (Exception e) {
@@ -335,6 +377,8 @@ public class MyGroupDAO {
     public GroupDTO groupinfo(String seq) {
 
         try {
+
+            conn = DBUtil.open();
 
             String sql = "select g.*, (select nickname from tblUser where id = g.id) as nickname, (select count(*) from tblUserGroup where gseq = g.seq) as cnt from tblGroup g where seq = ?";
 
@@ -358,6 +402,11 @@ public class MyGroupDAO {
                 dto.setId(rs.getString("id"));
                 dto.setCnt(rs.getString("cnt")); //그룹 인원수
 
+
+                rs.close();
+                pstat.close();
+                conn.close();
+
                 return dto;
 
             }
@@ -376,6 +425,8 @@ public class MyGroupDAO {
     public ArrayList<String> groupHash(String seq) {
 
         try {
+        
+            conn = DBUtil.open();
 
             String sql = "select ht.hashtag as hashtag from tblGroup g inner join tblGroupHash gh on g.seq = gh.gseq inner join tblHashtag ht on gh.hseq = ht.seq where g.seq = ?";
 
@@ -391,6 +442,11 @@ public class MyGroupDAO {
                 list.add(rs.getString("hashtag"));
 
             }
+            
+            rs.close();
+            pstat.close();
+            conn.close();
+            
             return list;
 
         } catch (Exception e) {
@@ -408,6 +464,8 @@ public class MyGroupDAO {
 
         try {
 
+            conn = DBUtil.open();
+
             String sql = "select * from tblGroup where seq = ?";
 
             pstat = conn.prepareStatement(sql);
@@ -422,6 +480,12 @@ public class MyGroupDAO {
                 dto.setName(rs.getString("name"));
                 dto.setInfo(rs.getString("info"));
                 dto.setRecruitment(rs.getString("recruitment"));
+
+
+                rs.close();
+                pstat.close();
+                conn.close();
+
 
                 return dto;
             }
@@ -441,6 +505,8 @@ public class MyGroupDAO {
 
         try {
 
+            conn = DBUtil.open();
+
             String sql = "delete from tblGROUPHASH where gseq = ?";
 
             pstat = conn.prepareStatement(sql);
@@ -456,13 +522,15 @@ public class MyGroupDAO {
             e.printStackTrace();
 
         }
-            return 0;
+            return -1;
     }
 
     //그룹 수정
     public int edit(GroupDTO gdto) {
 
         try {
+
+            conn = DBUtil.open();
 
             String sql = "update tblGroup set name = ?, info = ?, recruitment = ? where seq = ?";
 
@@ -492,13 +560,20 @@ public class MyGroupDAO {
 
         try {
 
+            conn = DBUtil.open();
 
-            String sql = "delete from tblGroup where gseq = ?";
+            String sql = "delete from tblGroup where seq = ?";
 
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, seq);
 
-            return pstat.executeUpdate();
+            int result = pstat.executeUpdate();
+
+            rs.close();
+            pstat.close();
+            conn.close();
+
+            return result;
 
 
         } catch(Exception e) {
@@ -507,22 +582,36 @@ public class MyGroupDAO {
 
         }
 
-        return 0;
+        return -1;
 
     }
 
-    public void delUserGroup(String seq) {
+    public int delUserGroup(String seq) {
 
         try {
 
-            String sql = "";
+            conn = DBUtil.open();
 
+            String sql = "delete tblUserGroup where gseq = ?";
+
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+            int result = pstat.executeUpdate();
+            System.out.println(result);
+
+            rs.close();
+            pstat.close();
+            conn.close();
+
+            return result;
 
         } catch(Exception e) {
             System.out.println("MyGroupDAO_delUserGroup");
             e.printStackTrace();
 
         }
+
+        return -1;
 
     }
 }
