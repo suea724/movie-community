@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class RecruitDAO {
 
@@ -28,6 +30,8 @@ public class RecruitDAO {
     public int add(RecruitmentPostDTO dto) {
 
         try {
+
+            conn = DBUtil.open();
 
 
             String sql = "insert into tblRecruit (seq, title, content, regdate, readcount, id, gseq) values (seqRecruit.nextVal, ?, ?, default, default, ?, ?)";
@@ -55,6 +59,8 @@ public class RecruitDAO {
     public ArrayList<RecruitmentPostDTO> list(HashMap<String, String> map) {
 
         try {
+
+            conn = DBUtil.open();
 
             String where = "";
 
@@ -89,6 +95,12 @@ public class RecruitDAO {
             }
 
 
+            //***
+
+            rs.close();
+            stat.close();
+            conn.close();
+
             return list;
 
 
@@ -109,6 +121,7 @@ public class RecruitDAO {
 
         try {
 
+            conn = DBUtil.open();
 
             String sql = "select name, seq from tblGroup where id = ?";
 
@@ -130,6 +143,10 @@ public class RecruitDAO {
                 glist.add(dto);
             }
 
+            rs.close();
+            stat.close();
+            conn.close();
+
             return glist;
 
 
@@ -150,7 +167,7 @@ public class RecruitDAO {
 
         try {
 
-
+            conn = DBUtil.open();
 
             String sql = "select tblRecruit.*, (select name from tblUser where id = tblRecruit.id) as name, (select nickname from tblUser where id = tblRecruit.id) as nickname" +
                     " from tblRecruit where seq = ?";
@@ -175,6 +192,11 @@ public class RecruitDAO {
 
             }
 
+            //***
+            rs.close();
+            stat.close();
+            conn.close();
+
 
             return dto;
 
@@ -194,6 +216,7 @@ public class RecruitDAO {
 
         try {
 
+            conn = DBUtil.open();
 
             String sql = "update tblRecruit set readcount = readcount + 1 where seq = ?";
 
@@ -215,6 +238,8 @@ public class RecruitDAO {
     public int edit(RecruitmentPostDTO dto) {
 
         try {
+
+            conn = DBUtil.open();
 
             String sql = "update tblRecruit set title = ?, content = ?, gseq = ? where seq = ?";
             //update tblRecruit set title = '추리 영화 함께 보는 모임 인원 모집합니다.', content = '추리 영화 좋아하는 누구나 환영ㅎㅎ', gseq = 23 where seq = 5;
@@ -240,6 +265,8 @@ public class RecruitDAO {
     public int del(String seq) {
 
             try {
+
+                conn = DBUtil.open();
 
                 String sql = "delete from tblRecruit where seq = ?";
 
@@ -267,6 +294,7 @@ public class RecruitDAO {
 
         try {
 
+            conn = DBUtil.open();
 
 
             String sql = "insert into tblGroupRequest(seq, id, gseq, regdate) values (seqGroupRequest.nextVal, ?, ?, default)";
@@ -293,6 +321,8 @@ public class RecruitDAO {
     public String checkApply(HashMap<String, String> map) {
 
         try {
+
+            conn = DBUtil.open();
 
             //select  case when count(*) = 0 then 'n' else 'y' end as apply from tblGroupRequest where id = 'hong' and gseq = 1;
             String sql = "select  case when count(*) = 0 then 'n' else 'y' end as apply from tblGroupRequest where id = ? and gseq = ?";
@@ -327,6 +357,8 @@ public class RecruitDAO {
 
         try {
 
+            conn = DBUtil.open();
+
             String where = "";
 
             if (map.get("isSearch").equals("y")) {
@@ -355,6 +387,157 @@ public class RecruitDAO {
         return 0;
 
     }
+
+    public int AddComment(Map<String, String> map) {
+
+        try {
+
+            conn = DBUtil.open();
+
+            String sql = "insert into tblRecruitComment values (seqRecruitComment.nextVal, ?, default, ?, ?)";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, map.get("content"));
+            pstat.setString(2, map.get("rseq"));
+            pstat.setString(3, map.get("id"));
+
+            return pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("RecruitDAO.AddComment");
+            e.printStackTrace();
+        }
+
+        return 0;
+
+
+    }
+
+    public RecruitCommentDTO GetComment() {
+
+        try {
+
+            conn = DBUtil.open();
+
+            String sql = "select c.*, (select nickname from tblUser where id = c.id) as nickname from tblRecruitComment c where seq = (select max(seq) from tblRecruitComment)";
+
+            stat = conn.createStatement();
+
+            rs = stat.executeQuery(sql);
+
+            RecruitCommentDTO dto = new RecruitCommentDTO();
+
+            if (rs.next()) {
+                dto.setSeq(rs.getString("seq"));
+                dto.setRseq(rs.getString("rseq"));
+                dto.setRegdate(rs.getString("regdate"));
+                dto.setContent(rs.getString("content"));
+                dto.setNickname(rs.getString("nickname"));
+                dto.setId(rs.getString("id"));
+
+                //****
+                rs.close();
+                stat.close();
+                conn.close();
+
+                return dto;
+            }
+        } catch (Exception e) {
+            System.out.println("RecruitDAO.GetComment");
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
+
+    public int EditComment(String seq, String content) {
+
+
+        try {
+
+            conn = DBUtil.open();
+
+            String sql = "update tblRecruitComment set content = ? where seq = ?";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, content);
+            pstat.setString(2, seq);
+
+            return pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("RecruitDAO.EditComment");
+            e.printStackTrace();
+        }
+
+        return 0;
+
+    }
+
+    public int DelComment(String seq) {
+
+        try {
+
+            conn = DBUtil.open();
+
+            String sql = "delete from tblRecruitComment where seq = ?";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+
+            return pstat.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println("RecruitDAO.DelComment");
+            e.printStackTrace();
+        }
+
+        return 0;
+
+    }
+
+    public List<RecruitCommentDTO> getComment(String seq) {
+
+        try {
+
+            conn = DBUtil.open();
+
+            String sql = "select c.*, (select nickname from tblUser where id = c.id) as nickname from tblRecruitComment c where rseq = ? order by seq desc";
+            pstat = conn.prepareStatement(sql);
+            pstat.setString(1, seq);
+
+            rs = pstat.executeQuery();
+
+            List<RecruitCommentDTO> rlist = new ArrayList<>();
+
+            while (rs.next()) {
+                RecruitCommentDTO dto = new RecruitCommentDTO();
+                dto.setNickname(rs.getString("nickname"));
+                dto.setContent(rs.getString("content"));
+                dto.setRegdate(rs.getString("regdate"));
+                dto.setId(rs.getString("id"));
+                dto.setSeq(rs.getString("seq"));
+
+                rlist.add(dto);
+            }
+
+
+            rs.close();
+            stat.close();
+            conn.close();
+
+            return rlist;
+
+        } catch (Exception e) {
+            System.out.println("RecruitDAO.getComment");
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
+
+
+
+
 }
 
 
