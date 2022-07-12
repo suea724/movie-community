@@ -16,12 +16,15 @@ public class MemberDAO {
     Statement stmt;
     ResultSet rs;
 
-    public MemberDAO() {
-        conn = DBUtil.open();
-    }
+//    public MemberDAO() {
+//
+//    }
 
     public MemberDTO login(LoginDTO dto) {
         try {
+
+            conn = DBUtil.open();
+
             String sql = "select * from tblUser where id = ? and password = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, dto.getId());
@@ -41,15 +44,22 @@ public class MemberDAO {
 
                 return mdto;
             }
+            pstmt.close();
+            rs.close();
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return null;
     }
 
     public int checkId(String id) {
         try {
+
+            conn = DBUtil.open();
+
             String sql = "select count(*) as cnt from tblUser where id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, id);
@@ -59,14 +69,22 @@ public class MemberDAO {
                 return Integer.parseInt(rs.getString("cnt"));
             }
 
+            pstmt.close();
+            rs.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
 
     public int checkNickname(String nickname) {
         try {
+
+            conn = DBUtil.open();
+
             String sql = "select count(*) as cnt from tblUser where nickname = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, nickname);
@@ -76,14 +94,22 @@ public class MemberDAO {
                 return Integer.parseInt(rs.getString("cnt"));
             }
 
+            pstmt.close();
+            rs.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
 
     public int getPostsCount(MemberDTO dto) {
         try {
+
+            conn = DBUtil.open();
+
             String sql = "select count(*) as cnt from tblPost p inner join tblUser u on p.id = u.id where u.id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, dto.getId());
@@ -93,14 +119,22 @@ public class MemberDAO {
                 return Integer.parseInt(rs.getString("cnt"));
             }
 
+            pstmt.close();
+            rs.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
 
     public int getCommentCount(MemberDTO dto) {
         try {
+
+            conn = DBUtil.open();
+
             String sql = "select count(*) as cnt from tblComment c inner join tblUser u on c.id = u.id where u.id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, dto.getId());
@@ -110,14 +144,22 @@ public class MemberDAO {
                 return Integer.parseInt(rs.getString("cnt"));
             }
 
+            pstmt.close();
+            rs.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
 
     public String findId(String name, String tel) {
         try {
+
+            conn = DBUtil.open();
+
             String sql = "select id from tblUser where name = ? and tel = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, name);
@@ -128,14 +170,22 @@ public class MemberDAO {
                 return rs.getString("id");
             }
 
+            pstmt.close();
+            rs.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return null;
     }
 
     public int findMemberByPw(String id, String name, String tel) {
         try {
+
+            conn = DBUtil.open();
+
             String sql = "select count(*) as cnt from tblUser where name = ? and tel = ? and id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, name);
@@ -147,14 +197,23 @@ public class MemberDAO {
                 return Integer.parseInt(rs.getString("cnt"));
             }
 
+            pstmt.close();
+            rs.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
 
     public int updatePw(String id, String pw) {
         try {
+
+            conn = DBUtil.open();
+
             String sql = "update tblUser set password = ? where id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, pw);
@@ -164,6 +223,8 @@ public class MemberDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
@@ -171,6 +232,9 @@ public class MemberDAO {
     public ArrayList<HashTagDTO> getGenres() {
 
         try {
+
+            conn = DBUtil.open();
+
             String sql = "select * from tblHashTag";
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
@@ -184,10 +248,16 @@ public class MemberDAO {
 
                 list.add(dto);
             }
+
+            stmt.close();
+            rs.close();
+
             return list;
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
 
         return null;
@@ -195,19 +265,27 @@ public class MemberDAO {
 
     public int del(String id) {
         try {
+
+            conn = DBUtil.open();
+
             String sql = "update tblUser set name = 'not used', nickname = 'not used', password = 'not used', tel = 'not used', picture = 'not used', joindate = sysdate where id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, id);
+
             return pstmt.executeUpdate();
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
 
     public int addMember(MemberDTO dto) {
         try {
+
+            conn = DBUtil.open();
 
             String sql = "";
 
@@ -239,12 +317,17 @@ public class MemberDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
 
     public void addTag(String id, ArrayList<String> list) {
         try {
+
+            conn = DBUtil.open();
+
             String sql = "insert into tblUserHash values (seqUserHash.nextVal, ?, ?)";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, id);
@@ -254,13 +337,21 @@ public class MemberDAO {
                 pstmt.executeUpdate();
             }
 
+            pstmt.close();
+            rs.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
     }
 
     public ArrayList<String> getHashSeqList(ArrayList<HashTagDTO> list) {
         try {
+
+            conn = DBUtil.open();
+
             String sql = "select seq from tblHashTag where hashtag = ?";
             pstmt = conn.prepareStatement(sql);
 
@@ -274,16 +365,25 @@ public class MemberDAO {
                     seqList.add(rs.getString("seq"));
                 }
             }
+
+            pstmt.close();
+            rs.close();
+
             return seqList;
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return null;
     }
 
     public ArrayList<String> getHashTagsById(String id) {
         try {
+
+            conn = DBUtil.open();
+
             String sql = "select  * from tblUserHash u inner join tblHashTag h on u.hseq = h.seq where id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, id);
@@ -294,10 +394,16 @@ public class MemberDAO {
             while (rs.next()) {
                 tagList.add(rs.getString("hashtag"));
             }
+
+            pstmt.close();
+            rs.close();
+
             return tagList;
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return null;
 
@@ -305,6 +411,8 @@ public class MemberDAO {
 
     public int updateNickname(String nickname, String id) {
         try {
+            conn = DBUtil.open();
+
             String sql = "update tblUser set nickname = ? where id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, nickname);
@@ -314,12 +422,16 @@ public class MemberDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
 
     public int updateTel(String tel, String id) {
         try {
+            conn = DBUtil.open();
+
             String sql = "update tblUser set tel = ? where id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, tel);
@@ -329,6 +441,8 @@ public class MemberDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
@@ -336,6 +450,8 @@ public class MemberDAO {
 
     public ArrayList<MyPostsDTO> getMyPosts(String id, int page) {
         try {
+
+            conn = DBUtil.open();
 
             int begin = (page - 1) * 20 + 1;
             int end = page * 20;
@@ -362,10 +478,16 @@ public class MemberDAO {
 
                 list.add(dto);
             }
+
+            pstmt.close();
+            rs.close();
+
             return list;
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return null;
 
@@ -373,6 +495,9 @@ public class MemberDAO {
 
     public int getTotalCount(String id) {
         try {
+
+            conn = DBUtil.open();
+
             String sql = "select count(*) as cnt from tblPost where id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, id);
@@ -382,8 +507,13 @@ public class MemberDAO {
                 return Integer.parseInt(rs.getString("cnt"));
             }
 
+            pstmt.close();
+            rs.close();
+
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
@@ -391,6 +521,9 @@ public class MemberDAO {
     public ArrayList<MyCommentsDTO> getMyComments(String id, int page) {
 
         try {
+
+            conn = DBUtil.open();
+
             int begin = (page - 1) * 20 + 1;
             int end = page * 20;
 
@@ -416,10 +549,15 @@ public class MemberDAO {
 
                 list.add(dto);
             }
+            pstmt.close();
+            rs.close();
+
             return list;
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
 
         return null;
@@ -427,6 +565,9 @@ public class MemberDAO {
 
     public int getTotalComments(String id) {
         try {
+
+            conn = DBUtil.open();
+
             String sql = "select count(*) as cnt from tblComment c inner join tblUser u on c.id = u.id inner join tblPost p on c.pseq = p.seq where u.id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, id);
@@ -435,9 +576,13 @@ public class MemberDAO {
             if (rs.next()) {
                 return Integer.parseInt(rs.getString("cnt"));
             }
+            pstmt.close();
+            rs.close();
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            DBUtil.close();
         }
         return 0;
     }
