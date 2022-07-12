@@ -144,7 +144,7 @@ public class RecruitDAO {
             }
 
             rs.close();
-            stat.close();
+            pstat.close();
             conn.close();
 
             return glist;
@@ -223,7 +223,11 @@ public class RecruitDAO {
             pstat = conn.prepareStatement(sql);
             pstat.setString(1, seq);
 
+
             pstat.executeUpdate();
+
+            conn.close();
+            pstat.close();
 
         } catch(Exception e) {
             System.out.println("RecruitDAO.updateReadcount");
@@ -274,7 +278,7 @@ public class RecruitDAO {
 
                 pstat.setString(1, seq);
 
-                System.out.println(seq);
+                //System.out.println(seq);
 
                 return pstat.executeUpdate();
 
@@ -521,7 +525,7 @@ public class RecruitDAO {
 
 
             rs.close();
-            stat.close();
+            pstat.close();
             conn.close();
 
             return rlist;
