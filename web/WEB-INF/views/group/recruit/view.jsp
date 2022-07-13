@@ -31,6 +31,7 @@
         display: flex;
         justify-content: right;
         margin-right: 20px;
+        margin-bottom: 30px;
 
     }
 
@@ -56,13 +57,13 @@
 
             <div id="board" style="color: white;">
                 <h2 style="margin-bottom: 30px; padding-top: 20px;">${dto.title}</h2>
-                <div>${dto.nickname}(${dto.id})<span style="display: inline; padding-left: 600px;">${dto.regdate} 조회수: ${dto.readcount}</span></div>
+                <div>${dto.nickname}(${dto.id})<span style="display: inline; padding-left: 550px;">${dto.regdate} 조회수: ${dto.readcount}</span></div>
                 <hr>
                 <div style="height: 300px; vertical-align: middle; color: white; display: inline" id="content" >${dto.content}</div>
                 <hr style="margin-bottom: 50px;">
 
 
-            <div class="btns" id="btns">
+            <div class="btns" >
 
 
                 <c:if test="${dto.id == auth.id}">
@@ -82,7 +83,7 @@
 
                 <c:if test="${not empty auth}">
                     <c:if test="${dto.id != auth.id}">
-                    <button class="btn btn-primary"
+                    <button class="btn btn-primary" style="margin-left: 850px;"
                             onclick="location.href='/movie/recruit/request.do?seq=${dto.seq}';">
                         신청하기
                     </button>
@@ -90,17 +91,17 @@
                 </c:if>
 
                 <hr>
-                <%--댓글--%>
+                <%--댓글쓰기--%>
 
                 <form id="addCommentForm">
-                    <table class="tblAddComment">
+                    <table class="tblAddComment" style="margin-left: auto; margin-right: auto; margin-top: 10px;">
                         <tr>
                             <td>
                                 <textarea style="resize: none; width: 500px;" class="form-control" name="content" required></textarea>
                             </td>
                             <td>
-                                <button class="btn btn-primary" type="button"
-                                        onclick="addComment();">
+                                <button class="btn btn-primary" type="button
+                                        onclick="addComment();>
                                     쓰기
                                 </button>
                             </td>
@@ -111,7 +112,7 @@
                 <table class="comment">
                     <c:forEach items="${rlist}" var="rdto">
                         <tr>
-                            <td style="width: 500px; color: black; background-color: #DDDD;">
+                            <td style="width: 900px; color: black; background-color: #DDDD; margin-right: 20px;">
                                 <div style="display: flex; justify-content: left; font-weight: bold;"><span>${rdto.nickname}</span></div>
                                 <div style="display: flex; justify-content: left;">${rdto.content}</div>
                                 <div style="display: flex; justify-content: left;">
@@ -120,10 +121,11 @@
                                 <c:if test="${rdto.id == auth.id}">
                                     <div style="display: flex; justify-content: right;">
                                         <span class="btnspan"><a href="#!" onclick="delComment(${rdto.seq});">[삭제]</a></span>
-                                        <span class="btnspan"><a href="#!" onclick="editcomment(${rdto.seq});">[수정]</a></span>
+                                        <span class="btnspan" style="margin-right: 10px;"><a href="#!" onclick="editcomment(${rdto.seq});">[수정]</a></span>
                                     </div>
                                 </c:if>
                             </td>
+
                         </tr>
                     </c:forEach>
 
@@ -158,7 +160,7 @@
 							<table class="tblEditComment">
 								<tr>
 									<td>
-										<textarea style="resize: none; width: 350px" class="form-control" name="content" required id="txtcontent"></textarea>
+										<textarea style="resize: none; width: 600px" class="form-control" name="content" required id="txtcontent"></textarea>
 									</td>
 									<td>
                                         <button class="btn btn-primary btn-sm" type="button"

@@ -53,8 +53,7 @@
 
                 </table>
 
-
-                <div style="text-align: center; display: flex">
+                <div style="justify-content: center; display: flex;">
                     ${pagebar}
                 </div>
 
@@ -62,7 +61,7 @@
 
                 <div>
                     <form method="GET" action="/movie/recruit/recruitlist.do">
-                        <table class="search">
+                        <table class="search" style="justify-content: center; display: flex;">
                             <tr>
                                 <td>
                                     <select name="column" class="form-control">
