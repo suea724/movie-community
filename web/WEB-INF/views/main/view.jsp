@@ -35,12 +35,8 @@
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <form action="">
-                                <button>좋아요</button>
-                            </form>
-                            <form action="">
-                                <button>싫어요</button>
-                            </form>
+                            <button><i style="color: #27aae2; font-size: 40px;" class="fa-solid fa-thumbs-up"></i></button>
+                            <button><i style="color: red; font-size: 40px;" class="fa-solid fa-thumbs-down" ></i></button>
                         </td>
                     </tr>
                     <c:if test="${dto.id == auth.id}">
