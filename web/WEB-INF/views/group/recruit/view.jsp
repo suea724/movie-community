@@ -100,8 +100,8 @@
                                 <textarea style="resize: none; width: 500px;" class="form-control" name="content" required></textarea>
                             </td>
                             <td>
-                                <button class="btn btn-primary" type="button
-                                        onclick="addComment();>
+                                <button class="btn btn-primary" type="button"
+                                        onclick="addComment();">
                                     쓰기
                                 </button>
                             </td>
