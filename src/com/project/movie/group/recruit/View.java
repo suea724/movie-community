@@ -37,7 +37,7 @@ public class View extends HttpServlet {
         RecruitmentPostDTO dto = dao.get(seq);
 
         //- 태그 비활성화
-        // dto.setTitle(dto.getTitle().replace("<", "&lt;").replace(">", "&gt;"));
+        dto.setTitle(dto.getTitle().replace("<", "&lt;").replace(">", "&gt;"));
         dto.setContent(dto.getContent().replace("<", "&lt;").replace(">", "&gt;"));
 
         //- 출력 데이터 조작하기
