@@ -2,6 +2,7 @@ package com.project.movie.group.mygroup;
 
 import com.project.movie.DBUtil;
 import com.project.movie.dto.GroupDTO;
+import com.project.movie.dto.GroupMemberDTO;
 import com.project.movie.dto.HashTagDTO;
 
 
@@ -613,6 +614,52 @@ public class MyGroupDAO {
 
         return -1;
 
+    }
+
+    //그룹 멤버 목록
+    public ArrayList<GroupMemberDTO> groupmember(String seq) {
+
+        try {
+
+        conn = DBUtil.open();
+
+        String sql = "select a.*, (select count(*) from tblpostgroup pg inner join tblpost p on pg.pseq = p.seq where pg.gseq = ? and a.id = p.id) as postcount, (select count(*) from tblPost p inner join tblcomment c on p.seq = c.pseq inner join tblpostgroup pg on pg.pseq = p.seq where pg.gseq = ? and p.id = a.id) as commentcount from (select u.name, u.nickname, u.id from TBLGROUP g inner join TBLUSERGROUP ug on g.seq = ug.gseq inner join tbluser u on ug.id = u.id where g.seq = ?) a";
+
+        pstat = conn.prepareStatement(sql);
+        pstat.setString(1, seq);
+        pstat.setString(2, seq);
+        pstat.setString(3, seq);
+
+        rs = pstat.executeQuery();
+
+        ArrayList<GroupMemberDTO> list = new ArrayList<GroupMemberDTO>();
+
+
+        int i = 1;
+
+        while (rs.next()) {
+
+            GroupMemberDTO dto = new GroupMemberDTO();
+
+            dto.setSeq(i);
+            dto.setName(rs.getString("name"));
+            dto.setNickname(rs.getString("nickname"));
+            dto.setPostcnt(rs.getString("postcount"));
+            dto.setCommentcnt(rs.getString("commentcount"));
+
+            list.add(dto);
+            i++;
+        }
+
+        return list;
+
+        } catch(Exception e) {
+            System.out.println("MyGroupDAO_groupmember");
+            e.printStackTrace();
+
+        }
+
+        return  null;
     }
 }
 
