@@ -426,7 +426,7 @@ public class MyGroupDAO {
     public ArrayList<String> groupHash(String seq) {
 
         try {
-
+        
             conn = DBUtil.open();
 
             String sql = "select ht.hashtag as hashtag from tblGroup g inner join tblGroupHash gh on g.seq = gh.gseq inner join tblHashtag ht on gh.hseq = ht.seq where g.seq = ?";
@@ -443,11 +443,11 @@ public class MyGroupDAO {
                 list.add(rs.getString("hashtag"));
 
             }
-
+            
             rs.close();
             pstat.close();
             conn.close();
-
+            
             return list;
 
         } catch (Exception e) {

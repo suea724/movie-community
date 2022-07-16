@@ -9,13 +9,6 @@
     <%@ include file="/WEB-INF/inc/header.jsp"%>
 
     <section>
-        <div id="selectbox" style="display: flex; justify-content: right;">
-            <select class="form-select" style="margin-right: 95px; margin-bottom: 20px; width: 130px;">
-                <option value="">최신순</option>
-                <option value="">오래된순</option>
-                <option value="">조회순</option>
-            </select>
-        </div>
         <c:if test="${map.isSearch == 'y'}">
             <div style="text-align: center; color: white; margin-bottom: 10px;">
                 '${map.word}'으로 검색한 결과 총 <span style="color: rgb(69, 149 , 140);">${list.size()}</span>개의 게시물이 발견되었습니다.
