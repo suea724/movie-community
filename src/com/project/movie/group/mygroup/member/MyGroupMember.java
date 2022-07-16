@@ -1,6 +1,7 @@
 package com.project.movie.group.mygroup.member;
 
 import com.project.movie.dto.GroupMemberDTO;
+import com.project.movie.dto.MemberDTO;
 import com.project.movie.group.mygroup.MyGroupDAO;
 
 import javax.servlet.RequestDispatcher;
@@ -9,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,18 +24,25 @@ public class MyGroupMember extends HttpServlet {
 
         String seq = request.getParameter("group");
 
+        HttpSession session = request.getSession();
+
+        GroupMemberDTO dto = new GroupMemberDTO();
+
+        MemberDTO memberDto = (MemberDTO) session.getAttribute("auth");
+        dto.setId(memberDto.getId());
+
 
         MyGroupDAO dao = new MyGroupDAO();
 
-        GroupMemberDTO dto = new GroupMemberDTO();
+
 
 
         ArrayList<GroupMemberDTO> list = dao.groupmember(seq);
 
 
+        String id = dto.getId();
 
-
-
+        request.setAttribute("groupId", id);
         request.setAttribute("group", seq);
         request.setAttribute("list", list);
 

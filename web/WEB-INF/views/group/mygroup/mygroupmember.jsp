@@ -20,7 +20,7 @@
                 <table class="table" style="width: 1000px">
                     <tr>
                         <th>번호</th>
-                        <th>그룹원 이름</th>
+                        <th >그룹원 이름</th>
                         <th>그룹원 닉네임</th>
                         <th>작성글 수</th>
                         <th>댓글 수</th>
@@ -29,8 +29,8 @@
                     <c:forEach items="${list}" var="dto">
                     <tr class="table-hover">
                         <td>${dto.seq}</td>
-                        <td>${dto.name}</td>
-                        <td>${dto.nickname}</td>
+                        <td style="text-align: center">${dto.name}</td>
+                        <td style="text-align: center">${dto.nickname}</td>
                         <td>${dto.postcnt}</td>
                         <td>${dto.commentcnt}</td>
                     </tr>
