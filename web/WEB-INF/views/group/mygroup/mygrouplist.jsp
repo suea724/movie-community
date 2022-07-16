@@ -90,7 +90,7 @@
 
                         <c:if test="${list.size() == 0}">
                             <tr>
-                                <td colspan="5">게시물이 없습니다.</td>
+                                <td colspan="5">그룹이 없습니다.</td>
                             </tr>
                         </c:if>
 
