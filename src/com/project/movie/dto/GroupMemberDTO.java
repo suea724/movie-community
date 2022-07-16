@@ -6,6 +6,7 @@ import lombok.Data;
 public class GroupMemberDTO {
 
     private int seq;
+    private String id;
     private String name;
     private String nickname;
     private String postcnt;
