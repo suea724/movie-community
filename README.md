@@ -20,6 +20,7 @@ Servlet/JSP 기반의 영화를 좋아하는 사람들을 위한 그룹 커뮤�
 
 ### 개발환경
 <img alt="" src ="https://img.shields.io/badge/windows-0078D6.svg?&style=for-the-badge&logo=windows&logoColor=white"/> <img alt="" src ="https://img.shields.io/badge/VSCode-007ACC.svg?&style=for-the-badge&logo=Visual Studio Code&logoColor=white"/> <img alt="" src ="https://img.shields.io/badge/IntelliJ-000000.svg?&style=for-the-badge&logo=IntelliJ IDEA&logoColor=white"/> <img alt="" src ="https://img.shields.io/badge/Oracle cloud-F80000.svg?&style=for-the-badge&logo=iCloud&logoColor=white"/> <img alt="" src ="https://img.shields.io/badge/
+github-181717.svg?&style=for-the-badge&logo=github&logoColor=white"/> <img alt="" src ="https://img.shields.io/badge/
 github-181717.svg?&style=for-the-badge&logo=github&logoColor=white"/> <img alt="" src ="https://img.shields.io/badge/Notion-000000.svg?&style=for-the-badge&logo=Notion&logoColor=white"/>
 
 
